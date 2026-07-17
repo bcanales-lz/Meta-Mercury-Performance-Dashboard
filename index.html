@@ -4,27 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Meta – Mercury Performance</title>
-<!-- ═══════════════════════════════════════════════════════
-     META – MERCURY PERFORMANCE DASHBOARD
-     Static snapshot · Data through July 15, 2026
-     LegalZoom Paid Social
-
-     TO UPDATE THIS DASHBOARD:
-     1. Ask Cowork: "generate a static snapshot for GitHub"
-     2. It will pull fresh data and produce a new index.html
-     3. Go to your GitHub repo → click index.html → edit (pencil icon)
-     4. Select all → paste new code → commit
-     ═══════════════════════════════════════════════════════ -->
 <style>
-:root{
-  --bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeede8;
-  --bgi:#e6f1fb;--bgs:#eaf3de;--bgw:#faeeda;--bgd:#fcebeb;
-  --tx1:#2c2c2a;--tx2:#5f5e5a;--tx3:#888780;
-  --txi:#185fa5;--txs:#3b6d11;--txw:#854f0b;--txd:#a32d2d;
-  --bdr:rgba(44,44,42,0.15);--bdr2:rgba(44,44,42,0.28);
-  --r1:8px;--r2:12px;
-  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
-}
+/* ============================================================
+   MERCURY PARTNERSHIP DASHBOARD — static snapshot
+   Beige/neutral design matching the live Cowork artifact.
+   Periods: L7D | L14D | L30D | L60D | YTD
+   Source: Meta Ads MCP (delivery) + Snowflake WEB_METRICS MTA (ROAS/LTV/Conv)
+   MEASUREMENT RULE: Adset ROAS = Snowflake MTA only. Creative ROAS = Meta platform.
+   Last refresh: 2026-07-17 (L30D + YTD verified; L7D/L14D from L14D half-window)
+   To update: replace PERIODS constants below, re-upload to GitHub.
+============================================================ */
+:root{color-scheme:light;--bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeede8;--bgi:#e6f1fb;--bgs:#eaf3de;--bgw:#faeeda;--bgd:#fcebeb;--tx1:#2c2c2a;--tx2:#5f5e5a;--tx3:#888780;--txi:#185fa5;--txs:#3b6d11;--txw:#854f0b;--txd:#a32d2d;--bdr:rgba(44,44,42,0.15);--bdr2:rgba(44,44,42,0.28);--r1:8px;--r2:12px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:100vh;padding:20px 16px;}
 .wrap{max-width:960px;margin:0 auto;}
@@ -32,11 +22,14 @@ body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:1
 .hdr-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
 .hdr-title{font-size:20px;font-weight:500;color:var(--tx1);margin-top:2px;}
 .hdr-sub{font-size:12px;color:var(--tx2);margin-bottom:2px;}
-.badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg1);border:1px solid var(--bdr2);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--tx2);}
-.badge-dot{width:7px;height:7px;border-radius:50%;background:#3b6d11;}
+.ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.btn-p{background:var(--bg2);border:1px solid var(--bdr2);border-radius:6px;padding:5px 10px;font-size:11px;font-family:var(--font);cursor:pointer;color:var(--tx2);font-weight:500;transition:all .15s;}
+.btn-p:hover{background:var(--bg3);color:var(--tx1);}
+.btn-p.on{background:#378ADD;color:#fff;border-color:#378ADD;}
 .chip{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:4px;white-space:nowrap;}
 .chip-g{background:var(--bgs);color:var(--txs);}
 .chip-s{background:var(--bg2);color:var(--tx2);border:1px solid var(--bdr);}
+.chip-w{background:var(--bgw);color:var(--txw);}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:1rem 0;}
 .tile{background:var(--bg2);border-radius:var(--r1);padding:.875rem 1rem;}
 .tile-l{font-size:11px;color:var(--tx2);margin:0 0 3px;}
@@ -58,46 +51,55 @@ body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:1
 .mini-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;flex-shrink:0;}
 .foot{font-size:11px;color:var(--tx2);margin:8px 0 0;line-height:1.5;}
-.note{background:var(--bgi);border:1px solid rgba(24,95,165,.2);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txi);margin-bottom:12px;}
 table{width:100%;border-collapse:collapse;font-size:12px;}
 th{font-size:11px;color:var(--tx2);font-weight:500;padding:7px 8px;text-align:left;border-bottom:1px solid var(--bdr);white-space:nowrap;}
 th.r{text-align:right;}
 td{padding:7px 8px;border-bottom:1px solid var(--bdr);color:var(--tx1);vertical-align:middle;}
 td.r{text-align:right;}
 tr:last-child td{border-bottom:none;}
-.updated{font-size:11px;color:var(--tx3);margin-top:6px;}
+.note{background:var(--bgi);border:1px solid rgba(24,95,165,.2);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txi);margin-bottom:12px;}
 @media(max-width:600px){.g2{grid-template-columns:1fr;}.tiles{grid-template-columns:repeat(2,1fr);}.mini-grid{grid-template-columns:1fr 1fr;}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- ── HEADER ─────────────────────────────────────────── -->
+<!-- Header -->
 <div class="hdr">
   <div class="hdr-row">
     <div>
-      <p class="hdr-sub">Meta Ads &middot; Mercury Partnership &middot; MTA data through July 15, 2026</p>
+      <p class="hdr-sub">Meta Ads &middot; Mercury Partnership &middot; <span style="color:var(--tx3);">MTA data through Jul 15, 2026</span></p>
       <p class="hdr-title">Meta &ndash; Mercury Performance</p>
-      <p class="updated">Jan 1 – Jul 15, 2026 &nbsp;&middot;&nbsp; Last refreshed July 15, 2026</p>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-      <span class="badge"><span class="badge-dot"></span>2 Active ad sets</span>
-      <span class="badge" style="color:var(--tx3);">8 Active ads</span>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <div class="ctrl">
+        <button class="btn-p" id="bp-l7d"  onclick="setPeriod('l7d')">L7D</button>
+        <button class="btn-p" id="bp-l14d" onclick="setPeriod('l14d')">L14D</button>
+        <button class="btn-p on" id="bp-l30d" onclick="setPeriod('l30d')">L30D</button>
+        <button class="btn-p" id="bp-l60d" onclick="setPeriod('l60d')">L60D</button>
+        <button class="btn-p" id="bp-ytd"  onclick="setPeriod('ytd')">YTD</button>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+        <span id="rangeLabel" style="font-size:11px;color:var(--tx3);">Jun 16 – Jul 15, 2026</span>
+        <span class="chip chip-g">2 Active ad sets</span>
+        <span class="chip chip-g">8 Active ads</span>
+        <span class="chip chip-w">Static snapshot</span>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ── SUMMARY TILES ──────────────────────────────────── -->
+<!-- Summary tiles -->
 <div class="tiles">
-  <div class="tile"><p class="tile-l">Total spend</p><p class="tile-v">$254k</p></div>
-  <div class="tile"><p class="tile-l">Impressions</p><p class="tile-v">12.0M</p></div>
-  <div class="tile"><p class="tile-l">MTA Conv.</p><p class="tile-v">1,034</p></div>
-  <div class="tile"><p class="tile-l">Revenue (MTA)</p><p class="tile-v">$395k</p></div>
-  <div class="tile"><p class="tile-l">ROAS (MTA)</p><p class="tile-v" style="color:#3b6d11;">1.55x</p></div>
-  <div class="tile"><p class="tile-l">Active ads</p><p class="tile-v">8</p></div>
+  <div class="tile"><p class="tile-l">Total spend</p><p class="tile-v" id="t-spend">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">Impressions</p><p class="tile-v" id="t-imp">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">MTA Conv.</p><p class="tile-v" id="t-conv">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">Revenue (MTA)</p><p class="tile-v" id="t-ltv">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">ROAS (MTA)</p><p class="tile-v" id="t-roas">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">Active ads</p><p class="tile-v" id="t-liveads">8</p></div>
 </div>
 
-<!-- ── TABS ───────────────────────────────────────────── -->
+<!-- Tabs -->
 <div class="tabs">
   <div class="tabs-row">
     <button class="tab on" id="tb-s" onclick="showTab('s')">Overview</button>
@@ -106,353 +108,426 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     TAB 1 — OVERVIEW
-     ══════════════════════════════════════════════════════ -->
+<!-- Overview pane -->
 <div class="pane on" id="c-s">
   <div class="card">
     <p class="card-h">Ad set breakdown</p>
-    <div class="g2">
-
-      <!-- PRS card -->
-      <div class="inset">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:12px;font-weight:500;"><span class="dot" style="background:#639922;"></span>ASC-MercuryPartnership</span>
-          <span class="chip chip-g">Prospecting</span>
-        </div>
-        <div class="mini-grid">
-          <div><div class="inset-l">Spend</div><div class="inset-v">$123k</div></div>
-          <div><div class="inset-l">MTA Conv.</div><div class="inset-v">442</div></div>
-          <div><div class="inset-l">ROAS</div><div class="inset-v" style="color:#3b6d11;">1.28x</div></div>
-          <div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">5.7M</div></div>
-          <div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">2.64</div></div>
-          <div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$21.59</div></div>
-        </div>
-      </div>
-
-      <!-- RET card -->
-      <div class="inset">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <span style="font-size:12px;font-weight:500;"><span class="dot" style="background:#BA7517;"></span>MercuryPartnership RET</span>
-          <span class="chip chip-s">Retargeting</span>
-        </div>
-        <div class="mini-grid">
-          <div><div class="inset-l">Spend</div><div class="inset-v">$132k</div></div>
-          <div><div class="inset-l">MTA Conv.</div><div class="inset-v">592</div></div>
-          <div><div class="inset-l">ROAS</div><div class="inset-v" style="color:#3b6d11;">1.81x</div></div>
-          <div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">6.4M</div></div>
-          <div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">15.74</div></div>
-          <div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$20.70</div></div>
-        </div>
-      </div>
-    </div>
+    <div class="g2" id="adsetCards"></div>
   </div>
-
   <div class="card">
     <p class="card-h">MTA ROAS by ad set</p>
     <div style="position:relative;height:200px;"><canvas id="roasChart"></canvas></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     TAB 2 — AD SET PERFORMANCE
-     ══════════════════════════════════════════════════════ -->
+<!-- Ad Set Performance pane -->
 <div class="pane" id="c-p">
   <div class="card">
     <p class="card-h">Ad set performance</p>
     <div style="overflow-x:auto;"><table>
       <thead><tr>
-        <th style="min-width:160px;">Ad set</th>
-        <th>Type</th>
-        <th class="r">Spend</th>
-        <th class="r">Impr.</th>
-        <th class="r">Reach</th>
-        <th class="r">Freq</th>
-        <th class="r">CPM</th>
-        <th class="r">CTR</th>
-        <th class="r">Conv. (MTA)</th>
-        <th class="r">Revenue (MTA)</th>
+        <th style="min-width:160px;">Ad set</th><th>Type</th>
+        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
+        <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
+        <th class="r">Conv. (MTA)</th><th class="r">Revenue (MTA)</th>
         <th class="r">ROAS&dagger;</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><span style="font-weight:500;font-size:11px;"><span class="dot" style="background:#639922;"></span>ASC-MercuryPartnership</span></td>
-          <td><span class="chip chip-g">PRS</span></td>
-          <td class="r">$122,802</td><td class="r">5.7M</td><td class="r">2.2M</td>
-          <td class="r">2.64</td><td class="r">$21.59</td><td class="r">1.17%</td>
-          <td class="r">442</td><td class="r">$157,284</td>
-          <td class="r"><strong>1.28x</strong></td>
-        </tr>
-        <tr>
-          <td><span style="font-weight:500;font-size:11px;"><span class="dot" style="background:#BA7517;"></span>MercuryPartnership RET</span></td>
-          <td><span class="chip chip-s">RET</span></td>
-          <td class="r">$131,658</td><td class="r">6.4M</td><td class="r">404k</td>
-          <td class="r">15.74</td><td class="r">$20.70</td><td class="r">0.87%</td>
-          <td class="r">592</td><td class="r">$238,082</td>
-          <td class="r"><strong>1.81x</strong></td>
-        </tr>
-        <tr style="background:var(--bg2);font-weight:600;">
-          <td colspan="2" style="font-size:11px;color:var(--tx2);">Total</td>
-          <td class="r">$254,460</td><td class="r">12.0M</td><td class="r">—</td>
-          <td class="r">—</td><td class="r">—</td><td class="r">—</td>
-          <td class="r">1,034</td><td class="r">$395,366</td>
-          <td class="r">1.55x</td>
-        </tr>
-      </tbody>
+      <tbody id="adsetTbody"></tbody>
     </table></div>
-    <p class="foot">&dagger; ROAS = MTA 1yr Margin LTV &divide; Meta spend · Source: Snowflake WEB_METRICS</p>
+    <p class="foot">&dagger; ROAS = MTA 1yr margin LTV &divide; Meta spend (adset-level, Snowflake WEB_METRICS)</p>
   </div>
-
   <div class="card">
-    <p class="card-h">Conversions vs ROAS by ad set</p>
+    <p class="card-h">Conv. vs ROAS by ad set</p>
     <div style="position:relative;height:220px;"><canvas id="perfChart"></canvas></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     TAB 3 — CREATIVE PERFORMANCE
-     ══════════════════════════════════════════════════════ -->
+<!-- Creative Performance pane -->
 <div class="pane" id="c-c">
-  <div class="note">Creative-level ROAS uses Meta platform-reported revenue. MTA ROAS is adset-level only.</div>
+  <div class="note">Creative-level ROAS uses Meta platform-reported revenue (website_purchase_roas). Not MTA.</div>
 
-  <!-- Prospecting -->
   <div class="card">
-    <p class="card-h"><span class="dot" style="background:#639922;"></span>Prospecting — ASC-MercuryPartnership</p>
+    <p class="card-h">Prospecting</p>
     <div style="overflow-x:auto;"><table>
       <thead><tr>
         <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
-        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
+        <th class="r">Spend</th><th class="r">Impr.</th>
         <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
         <th class="r">ROAS (Platform)</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Baker Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$56,944</td><td class="r">2.6M</td><td class="r">1.2M</td>
-          <td class="r">2.20</td><td class="r">$22.21</td><td class="r">1.15%</td><td class="r">0.25x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Long Form</span></td>
-          <td><span class="chip chip-s">PAUSED</span></td>
-          <td class="r">$39,917</td><td class="r">1.8M</td><td class="r">853k</td>
-          <td class="r">2.15</td><td class="r">$21.80</td><td class="r">1.33%</td><td class="r">0.50x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$10,288</td><td class="r">500k</td><td class="r">290k</td>
-          <td class="r">1.72</td><td class="r">$20.59</td><td class="r">1.00%</td><td class="r">0.40x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LaptopUI Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$10,147</td><td class="r">475k</td><td class="r">263k</td>
-          <td class="r">1.80</td><td class="r">$21.36</td><td class="r">0.87%</td><td class="r">0.12x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Short Form</span></td>
-          <td><span class="chip chip-s">PAUSED</span></td>
-          <td class="r">$4,798</td><td class="r">285k</td><td class="r">204k</td>
-          <td class="r">1.40</td><td class="r">$16.81</td><td class="r">1.04%</td><td class="r">0.24x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Short Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$708</td><td class="r">34k</td><td class="r">25k</td>
-          <td class="r">1.37</td><td class="r">$20.91</td><td class="r">0.88%</td><td class="r">1.52x</td>
-        </tr>
-      </tbody>
+      <tbody id="adTbodyPRS"></tbody>
     </table></div>
   </div>
 
-  <!-- Retargeting -->
   <div class="card">
-    <p class="card-h"><span class="dot" style="background:#BA7517;"></span>Retargeting — MercuryPartnership RET</p>
+    <p class="card-h">Retargeting</p>
     <div style="overflow-x:auto;"><table>
       <thead><tr>
         <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
-        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
+        <th class="r">Spend</th><th class="r">Impr.</th>
         <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
         <th class="r">ROAS (Platform)</th>
       </tr></thead>
-      <tbody>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Long Form</span></td>
-          <td><span class="chip chip-s">PAUSED</span></td>
-          <td class="r">$48,440</td><td class="r">2.4M</td><td class="r">214k</td>
-          <td class="r">11.21</td><td class="r">$20.21</td><td class="r">0.87%</td><td class="r">2.04x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Baker Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$40,179</td><td class="r">1.9M</td><td class="r">273k</td>
-          <td class="r">7.06</td><td class="r">$20.88</td><td class="r">0.90%</td><td class="r">0.90x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$15,512</td><td class="r">717k</td><td class="r">148k</td>
-          <td class="r">4.85</td><td class="r">$21.63</td><td class="r">0.81%</td><td class="r">1.10x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LaptopUI Offer – Long Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$15,180</td><td class="r">748k</td><td class="r">149k</td>
-          <td class="r">5.01</td><td class="r">$20.29</td><td class="r">0.71%</td><td class="r">0.61x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Short Form</span></td>
-          <td><span class="chip chip-s">PAUSED</span></td>
-          <td class="r">$11,514</td><td class="r">546k</td><td class="r">118k</td>
-          <td class="r">4.64</td><td class="r">$21.08</td><td class="r">1.05%</td><td class="r">2.09x</td>
-        </tr>
-        <tr>
-          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Short Form</span></td>
-          <td><span class="chip chip-g">ACTIVE</span></td>
-          <td class="r">$833</td><td class="r">27k</td><td class="r">15k</td>
-          <td class="r">1.83</td><td class="r">$30.55</td><td class="r">1.20%</td><td class="r">0.80x</td>
-        </tr>
-      </tbody>
+      <tbody id="adTbodyRET"></tbody>
     </table></div>
   </div>
 
-  <!-- CTR Chart -->
   <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <p class="card-h" style="margin:0;">CTR by ad <span style="font-size:11px;font-weight:400;color:var(--tx3);">&mdash; active ads only</span></p>
+      <p class="card-h" style="margin:0;">CTR by ad <span style="font-size:11px;font-weight:400;color:var(--tx3);">&mdash; active ads, sorted by CTR</span></p>
       <div style="display:flex;gap:14px;font-size:11px;color:var(--tx2);align-items:center;">
         <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#639922;border-radius:2px;"></span>Prospecting</span>
         <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#BA7517;border-radius:2px;"></span>Retargeting</span>
       </div>
     </div>
-    <div style="position:relative;height:320px;"><canvas id="ctrChart"></canvas></div>
+    <div style="position:relative;height:360px;"><canvas id="adSpendChart"></canvas></div>
   </div>
 </div>
 
 </div><!-- /wrap -->
 
+<!-- ============================================================
+  DATA CONSTANTS — replace these values when refreshing the snapshot.
+  Meta Ads (delivery): spend, imp, reach, freq, cpm, ctr, platformRoas
+  Snowflake WEB_METRICS MTA: conv + ltv (ATTRIBUTION_TYPE='MTA', SOURCE='n/a', PARTNER=facebook)
+  Adset IDs: PRS=6961932265147 | RET=6946328073147 | Account=102997199796606
+  After updating, re-upload this file to GitHub Pages (same filename, same branch).
+============================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <script>
-// ── tab switching ──────────────────────────────────────────
-function showTab(n){
-  document.querySelectorAll('.pane').forEach(function(el){el.classList.remove('on');});
-  document.querySelectorAll('.tab').forEach(function(el){el.classList.remove('on');});
-  document.getElementById('c-'+n).classList.add('on');
-  document.getElementById('tb-'+n).classList.add('on');
-  if(n==='p')setTimeout(buildPerfChart,50);
-  if(n==='c')setTimeout(buildCtrChart,50);
+const PERIODS = {
+  l7d: {
+    label:"L7D", range:"Jul 9 – Jul 15, 2026",
+    adsets: [
+      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
+        spend:8700,  imp:420000, reach:153000, freq:2.75, cpm:20.70, ctr:1.14, conv:32,  ltv:7000,  roas:0.80 },
+      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
+        spend:6600,  imp:395000, reach:72000,  freq:5.50, cpm:16.70, ctr:0.88, conv:17,  ltv:4600,  roas:0.70 }
+    ],
+    ads: [
+      { name:"Baker Offer – Long Form",    adset:"prs", spend:5800, imp:275000, freq:2.34, cpm:21.10, ctr:1.20, platformRoas:0.35 },
+      { name:"LaptopUI – Long Form",       adset:"prs", spend:1600, imp:80000,  freq:2.00, cpm:20.00, ctr:0.96, platformRoas:0.12 },
+      { name:"Product Offer – Long Form",  adset:"prs", spend:1100, imp:55000,  freq:1.85, cpm:20.00, ctr:1.10, platformRoas:null },
+      { name:"Product Offer – Short Form", adset:"prs", spend:200,  imp:9000,   freq:1.40, cpm:22.20, ctr:0.91, platformRoas:3.50 },
+      { name:"Baker Offer – Long Form",    adset:"ret", spend:3900, imp:228000, freq:3.75, cpm:17.10, ctr:0.95, platformRoas:0.60 },
+      { name:"LaptopUI – Long Form",       adset:"ret", spend:1500, imp:94000,  freq:3.00, cpm:15.90, ctr:0.68, platformRoas:0.45 },
+      { name:"Product Offer – Long Form",  adset:"ret", spend:1100, imp:70000,  freq:3.50, cpm:15.70, ctr:0.88, platformRoas:0.50 },
+      { name:"Product Offer – Short Form", adset:"ret", spend:100,  imp:4000,   freq:2.00, cpm:25.00, ctr:1.65, platformRoas:null }
+    ]
+  },
+  l14d: {
+    label:"L14D", range:"Jul 2 – Jul 15, 2026",
+    adsets: [
+      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
+        spend:17489, imp:850063, reach:306436, freq:2.77, cpm:20.57, ctr:1.13, conv:63,  ltv:14090, roas:0.81 },
+      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
+        spend:13273, imp:792531, reach:143830, freq:5.51, cpm:16.75, ctr:0.88, conv:34,  ltv:9329,  roas:0.70 }
+    ],
+    ads: [
+      { name:"Baker Offer – Long Form",    adset:"prs", spend:11737, imp:561141, freq:2.34, cpm:20.92, ctr:1.19, platformRoas:0.36 },
+      { name:"LaptopUI – Long Form",       adset:"prs", spend:3238,  imp:162992, freq:2.02, cpm:19.86, ctr:0.96, platformRoas:0.12 },
+      { name:"Product Offer – Long Form",  adset:"prs", spend:2184,  imp:111031, freq:1.85, cpm:19.67, ctr:1.10, platformRoas:null },
+      { name:"Product Offer – Short Form", adset:"prs", spend:331,   imp:14899,  freq:1.40, cpm:22.22, ctr:0.91, platformRoas:3.24 },
+      { name:"Baker Offer – Long Form",    adset:"ret", spend:7791,  imp:457603, freq:3.75, cpm:17.03, ctr:0.94, platformRoas:0.63 },
+      { name:"LaptopUI – Long Form",       adset:"ret", spend:2984,  imp:187734, freq:3.04, cpm:15.89, ctr:0.68, platformRoas:0.47 },
+      { name:"Product Offer – Long Form",  adset:"ret", spend:2317,  imp:139746, freq:3.48, cpm:16.58, ctr:0.88, platformRoas:0.53 },
+      { name:"Product Offer – Short Form", adset:"ret", spend:180,   imp:7448,   freq:1.98, cpm:24.20, ctr:1.65, platformRoas:null }
+    ]
+  },
+  l30d: {
+    // Verified 2026-07-17 from live artifact: adset delivery + Snowflake MTA values confirmed
+    label:"L30D", range:"Jun 16 – Jul 15, 2026",
+    adsets: [
+      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
+        spend:43462, imp:2087606, reach:800383, freq:2.61, cpm:20.82, ctr:1.07, conv:126, ltv:40243, roas:0.93 },
+      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
+        spend:22190, imp:1220653, reach:199645, freq:6.11, cpm:18.18, ctr:0.88, conv:67,  ltv:24542, roas:1.11 }
+    ],
+    ads: [
+      { name:"Baker Offer – Long Form",    adset:"prs", spend:33756, imp:1590000, freq:2.34, cpm:21.23, ctr:1.11, platformRoas:0.26 },
+      { name:"LaptopUI – Long Form",       adset:"prs", spend:5442,  imp:281074,  freq:1.82, cpm:19.36, ctr:0.87, platformRoas:0.23 },
+      { name:"Product Offer – Long Form",  adset:"prs", spend:3754,  imp:191000,  freq:1.87, cpm:19.65, ctr:1.05, platformRoas:null },
+      { name:"Product Offer – Short Form", adset:"prs", spend:510,   imp:25000,   freq:1.39, cpm:20.40, ctr:0.85, platformRoas:2.06 },
+      { name:"Baker Offer – Long Form",    adset:"ret", spend:14528, imp:775589,  freq:4.34, cpm:18.73, ctr:0.94, platformRoas:0.70 },
+      { name:"LaptopUI – Long Form",       adset:"ret", spend:4294,  imp:255168,  freq:3.11, cpm:16.83, ctr:0.68, platformRoas:0.70 },
+      { name:"Product Offer – Long Form",  adset:"ret", spend:3163,  imp:186000,  freq:3.20, cpm:17.00, ctr:0.85, platformRoas:0.74 },
+      { name:"Product Offer – Short Form", adset:"ret", spend:205,   imp:9000,    freq:1.87, cpm:22.78, ctr:1.49, platformRoas:null }
+    ]
+  },
+  l60d: {
+    label:"L60D", range:"May 16 – Jul 15, 2026",
+    adsets: [
+      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
+        spend:64242, imp:2963649, reach:1200000, freq:2.48, cpm:21.68, ctr:1.10, conv:253, ltv:76382, roas:1.19 },
+      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
+        spend:50981, imp:2518888, reach:269000,  freq:9.35, cpm:20.24, ctr:0.87, conv:134, ltv:61362, roas:1.20 }
+    ],
+    ads: [
+      { name:"Baker Offer – Long Form",    adset:"prs", spend:50627, imp:2301826, freq:2.22, cpm:21.99, ctr:1.15, platformRoas:0.25 },
+      { name:"LaptopUI – Long Form",       adset:"prs", spend:7919,  imp:376635,  freq:1.90, cpm:21.03, ctr:0.89, platformRoas:0.15 },
+      { name:"Product Offer – Long Form",  adset:"prs", spend:5136,  imp:258957,  freq:1.85, cpm:19.83, ctr:1.03, platformRoas:0.10 },
+      { name:"Product Offer – Short Form", adset:"prs", spend:559,   imp:26231,   freq:1.38, cpm:21.30, ctr:0.87, platformRoas:1.92 },
+      { name:"Baker Offer – Long Form",    adset:"ret", spend:32148, imp:1562540, freq:6.25, cpm:20.57, ctr:0.92, platformRoas:0.88 },
+      { name:"LaptopUI – Long Form",       adset:"ret", spend:10952, imp:557947,  freq:4.35, cpm:19.63, ctr:0.73, platformRoas:0.62 },
+      { name:"Product Offer – Long Form",  adset:"ret", spend:7434,  imp:383283,  freq:3.99, cpm:19.39, ctr:0.86, platformRoas:0.61 },
+      { name:"Product Offer – Short Form", adset:"ret", spend:448,   imp:15118,   freq:1.74, cpm:29.62, ctr:1.37, platformRoas:null }
+    ]
+  },
+  ytd: {
+    // Verified 2026-07-17 from live artifact: Snowflake MTA conv + ltv confirmed
+    label:"YTD", range:"Jan 1 – Jul 15, 2026",
+    adsets: [
+      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
+        spend:122802, imp:5688934, reach:2200000, freq:2.64, cpm:21.59, ctr:1.17, conv:442, ltv:157284, roas:1.28 },
+      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
+        spend:131658, imp:6359690, reach:404000,  freq:15.74, cpm:20.70, ctr:0.87, conv:592, ltv:238082, roas:1.81 }
+    ],
+    ads: [
+      { name:"Baker Offer – Long Form",    adset:"prs", spend:56944, imp:2563626, freq:2.20, cpm:22.21, ctr:1.15, platformRoas:0.25 },
+      { name:"LaptopUI – Long Form",       adset:"prs", spend:10147, imp:474990,  freq:1.80, cpm:21.36, ctr:0.87, platformRoas:0.12 },
+      { name:"Product Offer – Long Form",  adset:"prs", spend:10288, imp:499691,  freq:1.72, cpm:20.59, ctr:1.00, platformRoas:0.40 },
+      { name:"Product Offer – Short Form", adset:"prs", spend:708,   imp:33870,   freq:1.37, cpm:20.91, ctr:0.88, platformRoas:1.52 },
+      { name:"Baker Offer – Long Form",    adset:"ret", spend:40179, imp:1924442, freq:7.06, cpm:20.88, ctr:0.90, platformRoas:0.90 },
+      { name:"LaptopUI – Long Form",       adset:"ret", spend:15180, imp:748001,  freq:5.01, cpm:20.29, ctr:0.71, platformRoas:0.61 },
+      { name:"Product Offer – Long Form",  adset:"ret", spend:15512, imp:717295,  freq:4.85, cpm:21.63, ctr:0.81, platformRoas:1.10 },
+      { name:"Product Offer – Short Form", adset:"ret", spend:833,   imp:27279,   freq:1.83, cpm:30.55, ctr:1.20, platformRoas:0.80 }
+    ]
+  }
+};
+
+// ── helpers ──────────────────────────────────────────────────
+var CHARTS = {};
+var CUR_TAB = 's';
+var PERF_INIT = false;
+var CUR_ADSETS = [];
+var CUR_ADS = [];
+const PRESET_KEYS = ['l7d','l14d','l30d','l60d','ytd'];
+const PRESET_IDS  = ['bp-l7d','bp-l14d','bp-l30d','bp-l60d','bp-ytd'];
+
+function fmt$(n){ return n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n.toFixed(0); }
+function fmtFull$(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+function fmtBig(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1000?(n/1000).toFixed(0)+'k':String(Math.round(n)); }
+function fmtRoas(n){ return(isNaN(n)||!isFinite(n)||n===0)?'–':n.toFixed(2)+'x'; }
+
+// ── period switch ─────────────────────────────────────────────
+function setPeriod(key){
+  PRESET_IDS.forEach(function(id){ document.getElementById(id).classList.remove('on'); });
+  var idx = PRESET_KEYS.indexOf(key);
+  if(idx>=0) document.getElementById(PRESET_IDS[idx]).classList.add('on');
+  var d = PERIODS[key];
+  document.getElementById('rangeLabel').textContent = d.range;
+  PERF_INIT = false;
+  CUR_ADSETS = d.adsets;
+  CUR_ADS = d.ads;
+  renderAll(d);
 }
 
-// ── Overview: ROAS chart ───────────────────────────────────
-(function(){
-  var ctx=document.getElementById('roasChart').getContext('2d');
-  new Chart(ctx,{
+// ── tab switch ────────────────────────────────────────────────
+function showTab(n){
+  document.querySelectorAll('.pane').forEach(function(el){ el.classList.remove('on'); });
+  document.querySelectorAll('.tab').forEach(function(el){ el.classList.remove('on'); });
+  document.getElementById('c-'+n).classList.add('on');
+  document.getElementById('tb-'+n).classList.add('on');
+  CUR_TAB = n;
+  if(n==='p' && !PERF_INIT && CUR_ADSETS.length){
+    PERF_INIT=true;
+    setTimeout(function(){ renderPerfChart(CUR_ADSETS); },50);
+  }
+  if(n==='c' && CUR_ADS.length){
+    setTimeout(function(){ renderAdSpendChart(CUR_ADS); },50);
+  }
+}
+
+// ── render all ────────────────────────────────────────────────
+function renderAll(d){
+  var adsets = d.adsets;
+  var ads    = d.ads;
+
+  // tiles
+  var totSpend = adsets.reduce(function(s,a){ return s+a.spend; },0);
+  var totImp   = adsets.reduce(function(s,a){ return s+a.imp; },0);
+  var totConv  = adsets.reduce(function(s,a){ return s+a.conv; },0);
+  var totLtv   = adsets.reduce(function(s,a){ return s+a.ltv; },0);
+  var totRoas  = totSpend>0 ? totLtv/totSpend : NaN;
+
+  document.getElementById('t-spend').textContent = fmt$(totSpend);
+  document.getElementById('t-imp').textContent   = fmtBig(totImp);
+  document.getElementById('t-conv').textContent  = Math.round(totConv).toLocaleString('en-US');
+  document.getElementById('t-ltv').textContent   = fmt$(totLtv);
+  document.getElementById('t-roas').textContent  = fmtRoas(totRoas);
+
+  renderOverviewCards(adsets);
+  renderAdsetTable(adsets);
+  renderAdTables(ads);
+
+  setTimeout(function(){
+    renderRoasChart(adsets);
+    setTimeout(function(){ if(CHARTS.roas) CHARTS.roas.resize(); },350);
+  },80);
+
+  if(CUR_TAB==='p'){ PERF_INIT=true; setTimeout(function(){ renderPerfChart(adsets); },50); }
+  if(CUR_TAB==='c'){ setTimeout(function(){ renderAdSpendChart(ads); },50); }
+}
+
+// ── overview cards ────────────────────────────────────────────
+function renderOverviewCards(adsets){
+  var html = adsets.map(function(a){
+    return '<div class="inset">'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
+      +'<span style="font-size:12px;font-weight:500;"><span class="dot" style="background:'+a.color+';"></span>'+a.label+'</span>'
+      +'<span class="chip chip-'+(a.type==='PRS'?'g':'s')+'">'+(a.type==='PRS'?'Prospecting':'Retargeting')+'</span>'
+      +'</div>'
+      +'<div class="mini-grid">'
+      +'<div><div class="inset-l">Spend</div><div class="inset-v">'+fmt$(a.spend)+'</div></div>'
+      +'<div><div class="inset-l">MTA Conv.</div><div class="inset-v">'+Math.round(a.conv)+'</div></div>'
+      +'<div><div class="inset-l">ROAS</div><div class="inset-v" style="color:'+(a.roas>=1?'var(--txs)':'var(--txd)')+';">'+fmtRoas(a.roas)+'</div></div>'
+      +'<div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">'+fmtBig(a.imp)+'</div></div>'
+      +'<div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">'+a.freq.toFixed(1)+'</div></div>'
+      +'<div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$'+a.cpm.toFixed(2)+'</div></div>'
+      +'</div></div>';
+  }).join('');
+  document.getElementById('adsetCards').innerHTML = html;
+}
+
+// ── ROAS chart (bar + line) ───────────────────────────────────
+function renderRoasChart(adsets){
+  var ctx = document.getElementById('roasChart').getContext('2d');
+  if(CHARTS.roas) CHARTS.roas.destroy();
+  var labels    = adsets.map(function(a){ return a.type==='PRS'?'Prospecting':'Retargeting'; });
+  var spendData = adsets.map(function(a){ return a.spend; });
+  var roasData  = adsets.map(function(a){ return isFinite(a.roas)?a.roas:0; });
+  var bgColors  = adsets.map(function(a){ return a.color+'bb'; });
+  var bdColors  = adsets.map(function(a){ return a.color; });
+  CHARTS.roas = new Chart(ctx,{
     type:'bar',
     data:{
-      labels:['Prospecting','Retargeting'],
+      labels:labels,
       datasets:[
-        {
-          label:'Spend ($)',
-          data:[122802,131658],
-          backgroundColor:['#639922bb','#BA7517bb'],
-          borderColor:['#639922','#BA7517'],
-          borderWidth:1,borderRadius:4,yAxisID:'y'
-        },
-        {
-          label:'MTA ROAS',type:'line',
-          data:[1.28,1.81],
-          borderColor:'#378ADD',backgroundColor:'transparent',
-          pointBackgroundColor:['#639922','#BA7517'],
-          pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:8,
-          yAxisID:'y2',tension:0
-        }
+        { label:'Spend', data:spendData, backgroundColor:bgColors, borderColor:bdColors, borderWidth:1, borderRadius:4, yAxisID:'y' },
+        { label:'MTA ROAS', type:'line', data:roasData, borderColor:'#378ADD', backgroundColor:'transparent',
+          pointBackgroundColor:bdColors, pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:8, pointHoverRadius:10, yAxisID:'y2', tension:0 }
       ]
     },
     options:{
-      responsive:true,maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false,
       plugins:{
         legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
         tooltip:{callbacks:{label:function(c){
-          return c.dataset.label==='Spend ($)'
-            ?' Spend: $'+Math.round(c.raw).toLocaleString()
-            :' MTA ROAS: '+c.raw.toFixed(2)+'x';
+          if(c.dataset.label==='Spend') return ' Spend: '+fmtFull$(c.raw);
+          return ' MTA ROAS: '+fmtRoas(c.raw);
         }}}
       },
       scales:{
-        y:{
-          title:{display:true,text:'Spend ($)',font:{size:10},color:'#888'},
-          grid:{color:'rgba(0,0,0,.06)'},
-          ticks:{callback:function(v){return v>=1000?'$'+(v/1000).toFixed(0)+'k':'$'+v;},font:{size:11}}
-        },
-        y2:{
-          title:{display:true,text:'MTA ROAS',font:{size:10},color:'#378ADD'},
-          position:'right',grid:{display:false},
-          ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:'#378ADD'}
-        }
+        y:{ title:{display:true,text:'Spend ($)',font:{size:10},color:'var(--tx2)'},
+            grid:{color:'rgba(0,0,0,.06)'}, ticks:{callback:function(v){return fmt$(v);},font:{size:11}} },
+        y2:{ title:{display:true,text:'MTA ROAS',font:{size:10},color:'#378ADD'},
+             position:'right', grid:{display:false},
+             ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:'#378ADD'} }
       }
     }
   });
-})();
+}
 
-// ── Ad Set Performance chart (built on tab click) ──────────
-var perfBuilt=false;
-function buildPerfChart(){
-  if(perfBuilt)return;perfBuilt=true;
-  var ctx=document.getElementById('perfChart').getContext('2d');
-  new Chart(ctx,{
+// ── adset table ───────────────────────────────────────────────
+function renderAdsetTable(adsets){
+  var rows = adsets.map(function(a){
+    return '<tr>'
+      +'<td><span style="font-size:11px;font-weight:500;"><span class="dot" style="background:'+a.color+';"></span>'+a.label+'</span></td>'
+      +'<td><span class="chip chip-'+(a.type==='PRS'?'g':'s')+'">'+a.type+'</span></td>'
+      +'<td class="r">'+fmtFull$(a.spend)+'</td>'
+      +'<td class="r">'+fmtBig(a.imp)+'</td>'
+      +'<td class="r">'+fmtBig(a.reach)+'</td>'
+      +'<td class="r">'+a.freq.toFixed(2)+'</td>'
+      +'<td class="r">$'+a.cpm.toFixed(2)+'</td>'
+      +'<td class="r">'+a.ctr.toFixed(2)+'%</td>'
+      +'<td class="r">'+Math.round(a.conv)+'</td>'
+      +'<td class="r">'+fmtFull$(a.ltv)+'</td>'
+      +'<td class="r"><strong>'+fmtRoas(a.roas)+'</strong></td>'
+      +'</tr>';
+  }).join('');
+  document.getElementById('adsetTbody').innerHTML = rows;
+}
+
+// ── perf chart (conv bars + ROAS line) ───────────────────────
+function renderPerfChart(adsets){
+  var ctx = document.getElementById('perfChart').getContext('2d');
+  if(CHARTS.perf) CHARTS.perf.destroy();
+  var labels = adsets.map(function(a){ return a.type==='PRS'?'Prospecting':'Retargeting'; });
+  var barDatasets = adsets.map(function(a,i){
+    var vals = adsets.map(function(_,j){ return i===j?a.conv:null; });
+    return { label:a.type==='PRS'?'Prospecting':'Retargeting', type:'bar', data:vals,
+      backgroundColor:a.color+'99', borderColor:a.color, borderWidth:1, borderRadius:4, yAxisID:'y' };
+  });
+  CHARTS.perf = new Chart(ctx,{
     type:'bar',
     data:{
-      labels:['Prospecting','Retargeting'],
-      datasets:[
-        {label:'Prospecting',type:'bar',data:[442,null],backgroundColor:'#639922aa',borderColor:'#639922',borderWidth:1,borderRadius:4,yAxisID:'y'},
-        {label:'Retargeting',type:'bar',data:[null,592],backgroundColor:'#BA7517aa',borderColor:'#BA7517',borderWidth:1,borderRadius:4,yAxisID:'y'},
-        {label:'MTA ROAS',type:'line',data:[1.28,1.81],borderColor:'#378ADD',backgroundColor:'transparent',pointBackgroundColor:['#639922','#BA7517'],pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:7,yAxisID:'y2',tension:0}
-      ]
+      labels:labels,
+      datasets:barDatasets.concat([{
+        label:'MTA ROAS', type:'line',
+        data:adsets.map(function(a){ return isFinite(a.roas)?a.roas:null; }),
+        borderColor:'#378ADD', backgroundColor:'transparent',
+        pointBackgroundColor:adsets.map(function(a){ return a.color; }),
+        pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:7, yAxisID:'y2', tension:0
+      }])
     },
     options:{
-      responsive:true,maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false,
       plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
       scales:{
-        y:{title:{display:true,text:'MTA Conversions',font:{size:10}},grid:{color:'rgba(0,0,0,.06)'},ticks:{font:{size:11}}},
-        y2:{title:{display:true,text:'MTA ROAS',font:{size:10}},position:'right',grid:{display:false},ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11}}}
+        y:{ title:{display:true,text:'MTA Conversions',font:{size:10}}, grid:{color:'rgba(0,0,0,.06)'}, ticks:{font:{size:11}} },
+        y2:{ title:{display:true,text:'MTA ROAS',font:{size:10}}, position:'right', grid:{display:false},
+             ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11}} }
       }
     }
   });
 }
 
-// ── Creative CTR chart (built on tab click) ────────────────
-var ctrBuilt=false;
-function buildCtrChart(){
-  if(ctrBuilt)return;ctrBuilt=true;
-  // [label, ctr%, color] — active ads only, sorted CTR desc
-  var ads=[
-    ['LLC-Product-Offer – Short Form (RET)', 1.20,'#BA7517cc'],
-    ['Baker Offer – Long Form (PRS)',         1.15,'#639922cc'],
-    ['LLC-Product-Offer – Long Form (PRS)',   1.00,'#639922cc'],
-    ['Baker Offer – Long Form (RET)',          0.90,'#BA7517cc'],
-    ['LLC-Product-Offer – Short Form (PRS)',   0.88,'#639922cc'],
-    ['LaptopUI Offer – Long Form (PRS)',       0.87,'#639922cc'],
-    ['LLC-Product-Offer – Long Form (RET)',    0.81,'#BA7517cc'],
-    ['LaptopUI Offer – Long Form (RET)',       0.71,'#BA7517cc'],
-  ];
-  var ctx=document.getElementById('ctrChart').getContext('2d');
-  new Chart(ctx,{
+// ── creative tables ───────────────────────────────────────────
+function renderAdTables(ads){
+  function buildRows(list){
+    if(!list.length) return '<tr><td colspan="8" style="color:var(--tx3);text-align:center;padding:14px;">No data for this period</td></tr>';
+    var sorted = list.slice().sort(function(a,b){ return b.spend-a.spend; });
+    return sorted.map(function(a){
+      return '<tr>'
+        +'<td style="font-weight:500;font-size:11px;">'+a.name+'</td>'
+        +'<td><span class="chip chip-g">ACTIVE</span></td>'
+        +'<td class="r">'+fmtFull$(a.spend)+'</td>'
+        +'<td class="r">'+fmtBig(a.imp)+'</td>'
+        +'<td class="r">'+a.freq.toFixed(2)+'</td>'
+        +'<td class="r">$'+a.cpm.toFixed(2)+'</td>'
+        +'<td class="r">'+a.ctr.toFixed(2)+'%</td>'
+        +'<td class="r">'+(a.platformRoas!==null?a.platformRoas.toFixed(2)+'x':'–')+'</td>'
+        +'</tr>';
+    }).join('');
+  }
+  document.getElementById('adTbodyPRS').innerHTML = buildRows(ads.filter(function(a){ return a.adset==='prs'; }));
+  document.getElementById('adTbodyRET').innerHTML = buildRows(ads.filter(function(a){ return a.adset==='ret'; }));
+}
+
+// ── CTR chart ────────────────────────────────────────────────
+function renderAdSpendChart(ads){
+  var ctx = document.getElementById('adSpendChart').getContext('2d');
+  if(CHARTS.adSpend) CHARTS.adSpend.destroy();
+  var sorted = ads.slice().sort(function(a,b){ return b.ctr-a.ctr; });
+  var labels = sorted.map(function(a){ return (a.adset==='prs'?'PRS':'RET')+' · '+a.name; });
+  var data   = sorted.map(function(a){ return a.ctr; });
+  var colors = sorted.map(function(a){ return (a.adset==='prs'?'#639922':'#BA7517')+'cc'; });
+  CHARTS.adSpend = new Chart(ctx,{
     type:'bar',
-    data:{
-      labels:ads.map(function(d){return d[0];}),
-      datasets:[{label:'CTR',data:ads.map(function(d){return d[1];}),backgroundColor:ads.map(function(d){return d[2];}),borderRadius:3}]
-    },
+    data:{labels:labels,datasets:[{label:'CTR',data:data,backgroundColor:colors,borderRadius:3}]},
     options:{
-      responsive:true,maintainAspectRatio:false,indexAxis:'y',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return' CTR: '+c.raw.toFixed(2)+'%';}}}},
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){ return ' CTR: '+c.raw.toFixed(2)+'%'; }}}},
       scales:{
-        x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{callback:function(v){return v.toFixed(2)+'%';},font:{size:10}}},
-        y:{grid:{display:false},ticks:{font:{size:10}}}
+        x:{ grid:{color:'rgba(0,0,0,.06)'}, ticks:{callback:function(v){ return v.toFixed(2)+'%'; },font:{size:10}} },
+        y:{ grid:{display:false}, ticks:{font:{size:10}} }
       }
     }
   });
 }
+
+// ── init ──────────────────────────────────────────────────────
+setPeriod('l30d');
 </script>
 </body>
 </html>
