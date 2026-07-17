@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meta – Mercury Performance</title>
+<!-- ═══════════════════════════════════════════════════════
+     META – MERCURY PERFORMANCE DASHBOARD
+     Static snapshot · Data through July 15, 2026
+     LegalZoom Paid Social
+
+     TO UPDATE THIS DASHBOARD:
+     1. Ask Cowork: "generate a static snapshot for GitHub"
+     2. It will pull fresh data and produce a new index.html
+     3. Go to your GitHub repo → click index.html → edit (pencil icon)
+     4. Select all → paste new code → commit
+     ═══════════════════════════════════════════════════════ -->
+<style>
+:root{
+  --bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeede8;
+  --bgi:#e6f1fb;--bgs:#eaf3de;--bgw:#faeeda;--bgd:#fcebeb;
+  --tx1:#2c2c2a;--tx2:#5f5e5a;--tx3:#888780;
+  --txi:#185fa5;--txs:#3b6d11;--txw:#854f0b;--txd:#a32d2d;
+  --bdr:rgba(44,44,42,0.15);--bdr2:rgba(44,44,42,0.28);
+  --r1:8px;--r2:12px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:100vh;padding:20px 16px;}
+.wrap{max-width:960px;margin:0 auto;}
+.hdr{padding:0 0 .75rem;}
+.hdr-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
+.hdr-title{font-size:20px;font-weight:500;color:var(--tx1);margin-top:2px;}
+.hdr-sub{font-size:12px;color:var(--tx2);margin-bottom:2px;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--bg1);border:1px solid var(--bdr2);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--tx2);}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:#3b6d11;}
+.chip{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:4px;white-space:nowrap;}
+.chip-g{background:var(--bgs);color:var(--txs);}
+.chip-s{background:var(--bg2);color:var(--tx2);border:1px solid var(--bdr);}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:1rem 0;}
+.tile{background:var(--bg2);border-radius:var(--r1);padding:.875rem 1rem;}
+.tile-l{font-size:11px;color:var(--tx2);margin:0 0 3px;}
+.tile-v{font-size:19px;font-weight:500;margin:0;color:var(--tx1);}
+.tabs{border-bottom:1px solid var(--bdr);margin:.25rem 0 0;}
+.tabs-row{display:flex;flex-wrap:wrap;}
+.tab{background:none;border:none;border-bottom:2px solid transparent;padding:9px 14px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:var(--font);transition:color .15s;}
+.tab:hover{color:var(--tx1);}
+.tab.on{border-bottom-color:var(--tx1);color:var(--tx1);font-weight:500;}
+.pane{display:none;padding:.875rem 0;}
+.pane.on{display:block;}
+.card{background:var(--bg1);border:1px solid var(--bdr);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:12px;}
+.card:last-child{margin-bottom:0;}
+.card-h{font-size:13px;font-weight:500;margin:0 0 10px;color:var(--tx1);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.inset{background:var(--bg2);border-radius:var(--r1);padding:.75rem 1rem;}
+.inset-l{font-size:11px;color:var(--tx2);margin:0 0 2px;}
+.inset-v{font-size:16px;font-weight:500;}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;flex-shrink:0;}
+.foot{font-size:11px;color:var(--tx2);margin:8px 0 0;line-height:1.5;}
+.note{background:var(--bgi);border:1px solid rgba(24,95,165,.2);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txi);margin-bottom:12px;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+th{font-size:11px;color:var(--tx2);font-weight:500;padding:7px 8px;text-align:left;border-bottom:1px solid var(--bdr);white-space:nowrap;}
+th.r{text-align:right;}
+td{padding:7px 8px;border-bottom:1px solid var(--bdr);color:var(--tx1);vertical-align:middle;}
+td.r{text-align:right;}
+tr:last-child td{border-bottom:none;}
+.updated{font-size:11px;color:var(--tx3);margin-top:6px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}.tiles{grid-template-columns:repeat(2,1fr);}.mini-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ── HEADER ─────────────────────────────────────────── -->
+<div class="hdr">
+  <div class="hdr-row">
+    <div>
+      <p class="hdr-sub">Meta Ads &middot; Mercury Partnership &middot; MTA data through July 15, 2026</p>
+      <p class="hdr-title">Meta &ndash; Mercury Performance</p>
+      <p class="updated">Jan 1 – Jul 15, 2026 &nbsp;&middot;&nbsp; Last refreshed July 15, 2026</p>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
+      <span class="badge"><span class="badge-dot"></span>2 Active ad sets</span>
+      <span class="badge" style="color:var(--tx3);">8 Active ads</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── SUMMARY TILES ──────────────────────────────────── -->
+<div class="tiles">
+  <div class="tile"><p class="tile-l">Total spend</p><p class="tile-v">$254k</p></div>
+  <div class="tile"><p class="tile-l">Impressions</p><p class="tile-v">12.0M</p></div>
+  <div class="tile"><p class="tile-l">MTA Conv.</p><p class="tile-v">1,034</p></div>
+  <div class="tile"><p class="tile-l">Revenue (MTA)</p><p class="tile-v">$395k</p></div>
+  <div class="tile"><p class="tile-l">ROAS (MTA)</p><p class="tile-v" style="color:#3b6d11;">1.55x</p></div>
+  <div class="tile"><p class="tile-l">Active ads</p><p class="tile-v">8</p></div>
+</div>
+
+<!-- ── TABS ───────────────────────────────────────────── -->
+<div class="tabs">
+  <div class="tabs-row">
+    <button class="tab on" id="tb-s" onclick="showTab('s')">Overview</button>
+    <button class="tab" id="tb-p" onclick="showTab('p')">Ad Set Performance</button>
+    <button class="tab" id="tb-c" onclick="showTab('c')">Creative Performance</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 1 — OVERVIEW
+     ══════════════════════════════════════════════════════ -->
+<div class="pane on" id="c-s">
+  <div class="card">
+    <p class="card-h">Ad set breakdown</p>
+    <div class="g2">
+
+      <!-- PRS card -->
+      <div class="inset">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:12px;font-weight:500;"><span class="dot" style="background:#639922;"></span>ASC-MercuryPartnership</span>
+          <span class="chip chip-g">Prospecting</span>
+        </div>
+        <div class="mini-grid">
+          <div><div class="inset-l">Spend</div><div class="inset-v">$123k</div></div>
+          <div><div class="inset-l">MTA Conv.</div><div class="inset-v">442</div></div>
+          <div><div class="inset-l">ROAS</div><div class="inset-v" style="color:#3b6d11;">1.28x</div></div>
+          <div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">5.7M</div></div>
+          <div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">2.64</div></div>
+          <div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$21.59</div></div>
+        </div>
+      </div>
+
+      <!-- RET card -->
+      <div class="inset">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:12px;font-weight:500;"><span class="dot" style="background:#BA7517;"></span>MercuryPartnership RET</span>
+          <span class="chip chip-s">Retargeting</span>
+        </div>
+        <div class="mini-grid">
+          <div><div class="inset-l">Spend</div><div class="inset-v">$132k</div></div>
+          <div><div class="inset-l">MTA Conv.</div><div class="inset-v">592</div></div>
+          <div><div class="inset-l">ROAS</div><div class="inset-v" style="color:#3b6d11;">1.81x</div></div>
+          <div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">6.4M</div></div>
+          <div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">15.74</div></div>
+          <div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$20.70</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-h">MTA ROAS by ad set</p>
+    <div style="position:relative;height:200px;"><canvas id="roasChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 2 — AD SET PERFORMANCE
+     ══════════════════════════════════════════════════════ -->
+<div class="pane" id="c-p">
+  <div class="card">
+    <p class="card-h">Ad set performance</p>
+    <div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th style="min-width:160px;">Ad set</th>
+        <th>Type</th>
+        <th class="r">Spend</th>
+        <th class="r">Impr.</th>
+        <th class="r">Reach</th>
+        <th class="r">Freq</th>
+        <th class="r">CPM</th>
+        <th class="r">CTR</th>
+        <th class="r">Conv. (MTA)</th>
+        <th class="r">Revenue (MTA)</th>
+        <th class="r">ROAS&dagger;</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span style="font-weight:500;font-size:11px;"><span class="dot" style="background:#639922;"></span>ASC-MercuryPartnership</span></td>
+          <td><span class="chip chip-g">PRS</span></td>
+          <td class="r">$122,802</td><td class="r">5.7M</td><td class="r">2.2M</td>
+          <td class="r">2.64</td><td class="r">$21.59</td><td class="r">1.17%</td>
+          <td class="r">442</td><td class="r">$157,284</td>
+          <td class="r"><strong>1.28x</strong></td>
+        </tr>
+        <tr>
+          <td><span style="font-weight:500;font-size:11px;"><span class="dot" style="background:#BA7517;"></span>MercuryPartnership RET</span></td>
+          <td><span class="chip chip-s">RET</span></td>
+          <td class="r">$131,658</td><td class="r">6.4M</td><td class="r">404k</td>
+          <td class="r">15.74</td><td class="r">$20.70</td><td class="r">0.87%</td>
+          <td class="r">592</td><td class="r">$238,082</td>
+          <td class="r"><strong>1.81x</strong></td>
+        </tr>
+        <tr style="background:var(--bg2);font-weight:600;">
+          <td colspan="2" style="font-size:11px;color:var(--tx2);">Total</td>
+          <td class="r">$254,460</td><td class="r">12.0M</td><td class="r">—</td>
+          <td class="r">—</td><td class="r">—</td><td class="r">—</td>
+          <td class="r">1,034</td><td class="r">$395,366</td>
+          <td class="r">1.55x</td>
+        </tr>
+      </tbody>
+    </table></div>
+    <p class="foot">&dagger; ROAS = MTA 1yr Margin LTV &divide; Meta spend · Source: Snowflake WEB_METRICS</p>
+  </div>
+
+  <div class="card">
+    <p class="card-h">Conversions vs ROAS by ad set</p>
+    <div style="position:relative;height:220px;"><canvas id="perfChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     TAB 3 — CREATIVE PERFORMANCE
+     ══════════════════════════════════════════════════════ -->
+<div class="pane" id="c-c">
+  <div class="note">Creative-level ROAS uses Meta platform-reported revenue. MTA ROAS is adset-level only.</div>
+
+  <!-- Prospecting -->
+  <div class="card">
+    <p class="card-h"><span class="dot" style="background:#639922;"></span>Prospecting — ASC-MercuryPartnership</p>
+    <div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
+        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
+        <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
+        <th class="r">ROAS (Platform)</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Baker Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$56,944</td><td class="r">2.6M</td><td class="r">1.2M</td>
+          <td class="r">2.20</td><td class="r">$22.21</td><td class="r">1.15%</td><td class="r">0.25x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Long Form</span></td>
+          <td><span class="chip chip-s">PAUSED</span></td>
+          <td class="r">$39,917</td><td class="r">1.8M</td><td class="r">853k</td>
+          <td class="r">2.15</td><td class="r">$21.80</td><td class="r">1.33%</td><td class="r">0.50x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$10,288</td><td class="r">500k</td><td class="r">290k</td>
+          <td class="r">1.72</td><td class="r">$20.59</td><td class="r">1.00%</td><td class="r">0.40x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LaptopUI Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$10,147</td><td class="r">475k</td><td class="r">263k</td>
+          <td class="r">1.80</td><td class="r">$21.36</td><td class="r">0.87%</td><td class="r">0.12x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Short Form</span></td>
+          <td><span class="chip chip-s">PAUSED</span></td>
+          <td class="r">$4,798</td><td class="r">285k</td><td class="r">204k</td>
+          <td class="r">1.40</td><td class="r">$16.81</td><td class="r">1.04%</td><td class="r">0.24x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Short Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$708</td><td class="r">34k</td><td class="r">25k</td>
+          <td class="r">1.37</td><td class="r">$20.91</td><td class="r">0.88%</td><td class="r">1.52x</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- Retargeting -->
+  <div class="card">
+    <p class="card-h"><span class="dot" style="background:#BA7517;"></span>Retargeting — MercuryPartnership RET</p>
+    <div style="overflow-x:auto;"><table>
+      <thead><tr>
+        <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
+        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
+        <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
+        <th class="r">ROAS (Platform)</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Long Form</span></td>
+          <td><span class="chip chip-s">PAUSED</span></td>
+          <td class="r">$48,440</td><td class="r">2.4M</td><td class="r">214k</td>
+          <td class="r">11.21</td><td class="r">$20.21</td><td class="r">0.87%</td><td class="r">2.04x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Baker Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$40,179</td><td class="r">1.9M</td><td class="r">273k</td>
+          <td class="r">7.06</td><td class="r">$20.88</td><td class="r">0.90%</td><td class="r">0.90x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$15,512</td><td class="r">717k</td><td class="r">148k</td>
+          <td class="r">4.85</td><td class="r">$21.63</td><td class="r">0.81%</td><td class="r">1.10x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LaptopUI Offer – Long Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$15,180</td><td class="r">748k</td><td class="r">149k</td>
+          <td class="r">5.01</td><td class="r">$20.29</td><td class="r">0.71%</td><td class="r">0.61x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">Lifestyle Offer – Short Form</span></td>
+          <td><span class="chip chip-s">PAUSED</span></td>
+          <td class="r">$11,514</td><td class="r">546k</td><td class="r">118k</td>
+          <td class="r">4.64</td><td class="r">$21.08</td><td class="r">1.05%</td><td class="r">2.09x</td>
+        </tr>
+        <tr>
+          <td><span style="font-size:11px;font-weight:500;">LLC-Product-Offer – Short Form</span></td>
+          <td><span class="chip chip-g">ACTIVE</span></td>
+          <td class="r">$833</td><td class="r">27k</td><td class="r">15k</td>
+          <td class="r">1.83</td><td class="r">$30.55</td><td class="r">1.20%</td><td class="r">0.80x</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <!-- CTR Chart -->
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <p class="card-h" style="margin:0;">CTR by ad <span style="font-size:11px;font-weight:400;color:var(--tx3);">&mdash; active ads only</span></p>
+      <div style="display:flex;gap:14px;font-size:11px;color:var(--tx2);align-items:center;">
+        <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#639922;border-radius:2px;"></span>Prospecting</span>
+        <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#BA7517;border-radius:2px;"></span>Retargeting</span>
+      </div>
+    </div>
+    <div style="position:relative;height:320px;"><canvas id="ctrChart"></canvas></div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script>
+// ── tab switching ──────────────────────────────────────────
+function showTab(n){
+  document.querySelectorAll('.pane').forEach(function(el){el.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(el){el.classList.remove('on');});
+  document.getElementById('c-'+n).classList.add('on');
+  document.getElementById('tb-'+n).classList.add('on');
+  if(n==='p')setTimeout(buildPerfChart,50);
+  if(n==='c')setTimeout(buildCtrChart,50);
+}
+
+// ── Overview: ROAS chart ───────────────────────────────────
+(function(){
+  var ctx=document.getElementById('roasChart').getContext('2d');
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Prospecting','Retargeting'],
+      datasets:[
+        {
+          label:'Spend ($)',
+          data:[122802,131658],
+          backgroundColor:['#639922bb','#BA7517bb'],
+          borderColor:['#639922','#BA7517'],
+          borderWidth:1,borderRadius:4,yAxisID:'y'
+        },
+        {
+          label:'MTA ROAS',type:'line',
+          data:[1.28,1.81],
+          borderColor:'#378ADD',backgroundColor:'transparent',
+          pointBackgroundColor:['#639922','#BA7517'],
+          pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:8,
+          yAxisID:'y2',tension:0
+        }
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
+        tooltip:{callbacks:{label:function(c){
+          return c.dataset.label==='Spend ($)'
+            ?' Spend: $'+Math.round(c.raw).toLocaleString()
+            :' MTA ROAS: '+c.raw.toFixed(2)+'x';
+        }}}
+      },
+      scales:{
+        y:{
+          title:{display:true,text:'Spend ($)',font:{size:10},color:'#888'},
+          grid:{color:'rgba(0,0,0,.06)'},
+          ticks:{callback:function(v){return v>=1000?'$'+(v/1000).toFixed(0)+'k':'$'+v;},font:{size:11}}
+        },
+        y2:{
+          title:{display:true,text:'MTA ROAS',font:{size:10},color:'#378ADD'},
+          position:'right',grid:{display:false},
+          ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:'#378ADD'}
+        }
+      }
+    }
+  });
+})();
+
+// ── Ad Set Performance chart (built on tab click) ──────────
+var perfBuilt=false;
+function buildPerfChart(){
+  if(perfBuilt)return;perfBuilt=true;
+  var ctx=document.getElementById('perfChart').getContext('2d');
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:['Prospecting','Retargeting'],
+      datasets:[
+        {label:'Prospecting',type:'bar',data:[442,null],backgroundColor:'#639922aa',borderColor:'#639922',borderWidth:1,borderRadius:4,yAxisID:'y'},
+        {label:'Retargeting',type:'bar',data:[null,592],backgroundColor:'#BA7517aa',borderColor:'#BA7517',borderWidth:1,borderRadius:4,yAxisID:'y'},
+        {label:'MTA ROAS',type:'line',data:[1.28,1.81],borderColor:'#378ADD',backgroundColor:'transparent',pointBackgroundColor:['#639922','#BA7517'],pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:7,yAxisID:'y2',tension:0}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
+      scales:{
+        y:{title:{display:true,text:'MTA Conversions',font:{size:10}},grid:{color:'rgba(0,0,0,.06)'},ticks:{font:{size:11}}},
+        y2:{title:{display:true,text:'MTA ROAS',font:{size:10}},position:'right',grid:{display:false},ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11}}}
+      }
+    }
+  });
+}
+
+// ── Creative CTR chart (built on tab click) ────────────────
+var ctrBuilt=false;
+function buildCtrChart(){
+  if(ctrBuilt)return;ctrBuilt=true;
+  // [label, ctr%, color] — active ads only, sorted CTR desc
+  var ads=[
+    ['LLC-Product-Offer – Short Form (RET)', 1.20,'#BA7517cc'],
+    ['Baker Offer – Long Form (PRS)',         1.15,'#639922cc'],
+    ['LLC-Product-Offer – Long Form (PRS)',   1.00,'#639922cc'],
+    ['Baker Offer – Long Form (RET)',          0.90,'#BA7517cc'],
+    ['LLC-Product-Offer – Short Form (PRS)',   0.88,'#639922cc'],
+    ['LaptopUI Offer – Long Form (PRS)',       0.87,'#639922cc'],
+    ['LLC-Product-Offer – Long Form (RET)',    0.81,'#BA7517cc'],
+    ['LaptopUI Offer – Long Form (RET)',       0.71,'#BA7517cc'],
+  ];
+  var ctx=document.getElementById('ctrChart').getContext('2d');
+  new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:ads.map(function(d){return d[0];}),
+      datasets:[{label:'CTR',data:ads.map(function(d){return d[1];}),backgroundColor:ads.map(function(d){return d[2];}),borderRadius:3}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return' CTR: '+c.raw.toFixed(2)+'%';}}}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,.06)'},ticks:{callback:function(v){return v.toFixed(2)+'%';},font:{size:10}}},
+        y:{grid:{display:false},ticks:{font:{size:10}}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
