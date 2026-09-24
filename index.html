@@ -3,113 +3,123 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meta – Mercury Performance</title>
+<title>Meta Mercury Live</title>
 <style>
-/* ============================================================
-   MERCURY PARTNERSHIP DASHBOARD — static snapshot
-   Beige/neutral design matching the live Cowork artifact.
-   Periods: L7D | L14D | L30D | L60D | YTD
-   Source: Meta Ads MCP (delivery) + Snowflake WEB_METRICS MTA (ROAS/LTV/Conv)
-   MEASUREMENT RULE: Adset ROAS = Snowflake MTA only. Creative ROAS = Meta platform.
-   Last refresh: 2026-07-17 (L30D + YTD verified; L7D/L14D from L14D half-window)
-   To update: replace PERIODS constants below, re-upload to GitHub.
-============================================================ */
-:root{color-scheme:light;--bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeede8;--bgi:#e6f1fb;--bgs:#eaf3de;--bgw:#faeeda;--bgd:#fcebeb;--tx1:#2c2c2a;--tx2:#5f5e5a;--tx3:#888780;--txi:#185fa5;--txs:#3b6d11;--txw:#854f0b;--txd:#a32d2d;--bdr:rgba(44,44,42,0.15);--bdr2:rgba(44,44,42,0.28);--r1:8px;--r2:12px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}
+:root{color-scheme:light;--bg1:#ffffff;--bg2:#f5f5f3;--bg3:#eeede8;--bgi:#e6f1fb;--bgs:#eaf3de;--bgw:#faeeda;--bgd:#fcebeb;--tx1:#2c2c2a;--tx2:#5f5e5a;--tx3:#888780;--txi:#185fa5;--txs:#3b6d11;--txw:#854f0b;--txd:#a32d2d;--bdr:rgba(44,44,42,0.15);--bdr2:rgba(44,44,42,0.28);--grid:rgba(0,0,0,.06);--accent:#378ADD;--r1:8px;--r2:12px;--font:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;--bg1:#1f1f1d;--bg2:#2a2a27;--bg3:#161615;--bgi:#15263a;--bgs:#1e2c14;--bgw:#33260f;--bgd:#3a1a1a;--tx1:#ecebe6;--tx2:#b3b1aa;--tx3:#85837c;--txi:#7db6ec;--txs:#9ccc6b;--txw:#e0a651;--txd:#ef8a8a;--bdr:rgba(236,235,230,0.12);--bdr2:rgba(236,235,230,0.24);--grid:rgba(255,255,255,.07);--accent:#5aa2e8;}}
+:root[data-theme="dark"]{color-scheme:dark;--bg1:#1f1f1d;--bg2:#2a2a27;--bg3:#161615;--bgi:#15263a;--bgs:#1e2c14;--bgw:#33260f;--bgd:#3a1a1a;--tx1:#ecebe6;--tx2:#b3b1aa;--tx3:#85837c;--txi:#7db6ec;--txs:#9ccc6b;--txw:#e0a651;--txd:#ef8a8a;--bdr:rgba(236,235,230,0.12);--bdr2:rgba(236,235,230,0.24);--grid:rgba(255,255,255,.07);--accent:#5aa2e8;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg3);color:var(--tx1);min-height:100vh;padding:20px 16px;}
 .wrap{max-width:960px;margin:0 auto;}
 .hdr{padding:0 0 .75rem;}
 .hdr-row{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
-.hdr-title{font-size:20px;font-weight:500;color:var(--tx1);margin-top:2px;}
+.hdr-title{font-size:20px;font-weight:500;color:var(--tx1);margin-top:2px;text-wrap:balance;}
 .hdr-sub{font-size:12px;color:var(--tx2);margin-bottom:2px;}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;}
 .ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.ctrl label{font-size:12px;color:var(--tx2);}
+input[type=date]{background:var(--bg1);border:1px solid var(--bdr2);border-radius:var(--r1);padding:5px 8px;font-size:12px;color:var(--tx1);font-family:var(--font);cursor:pointer;outline:none;}
+input[type=date]:focus-visible{border-color:var(--txi);}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:12px;font-family:var(--font);cursor:pointer;font-weight:500;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
 .btn-p{background:var(--bg2);border:1px solid var(--bdr2);border-radius:6px;padding:5px 10px;font-size:11px;font-family:var(--font);cursor:pointer;color:var(--tx2);font-weight:500;transition:all .15s;}
 .btn-p:hover{background:var(--bg3);color:var(--tx1);}
-.btn-p.on{background:#378ADD;color:#fff;border-color:#378ADD;}
+.btn-p.on{background:var(--accent);color:#fff;border-color:var(--accent);}
 .chip{display:inline-block;font-size:10px;font-weight:500;padding:3px 9px;border-radius:4px;white-space:nowrap;}
 .chip-g{background:var(--bgs);color:var(--txs);}
 .chip-s{background:var(--bg2);color:var(--tx2);border:1px solid var(--bdr);}
-.chip-w{background:var(--bgw);color:var(--txw);}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;margin:1rem 0;}
 .tile{background:var(--bg2);border-radius:var(--r1);padding:.875rem 1rem;}
 .tile-l{font-size:11px;color:var(--tx2);margin:0 0 3px;}
-.tile-v{font-size:19px;font-weight:500;margin:0;color:var(--tx1);}
+.tile-v{font-size:19px;font-weight:500;margin:0;color:var(--tx1);font-variant-numeric:tabular-nums;}
 .tabs{border-bottom:1px solid var(--bdr);margin:.25rem 0 0;}
 .tabs-row{display:flex;flex-wrap:wrap;}
 .tab{background:none;border:none;border-bottom:2px solid transparent;padding:9px 14px;font-size:13px;color:var(--tx2);cursor:pointer;font-family:var(--font);transition:color .15s;}
 .tab:hover{color:var(--tx1);}
 .tab.on{border-bottom-color:var(--tx1);color:var(--tx1);font-weight:500;}
-.pane{display:none;padding:.875rem 0;}
-.pane.on{display:block;}
+.pane{padding:.875rem 0;}
 .card{background:var(--bg1);border:1px solid var(--bdr);border-radius:var(--r2);padding:1rem 1.25rem;margin-bottom:12px;}
 .card:last-child{margin-bottom:0;}
 .card-h{font-size:13px;font-weight:500;margin:0 0 10px;color:var(--tx1);}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .inset{background:var(--bg2);border-radius:var(--r1);padding:.75rem 1rem;}
 .inset-l{font-size:11px;color:var(--tx2);margin:0 0 2px;}
-.inset-v{font-size:16px;font-weight:500;}
+.inset-v{font-size:16px;font-weight:500;font-variant-numeric:tabular-nums;}
 .mini-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;flex-shrink:0;}
 .foot{font-size:11px;color:var(--tx2);margin:8px 0 0;line-height:1.5;}
-table{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums;}
 th{font-size:11px;color:var(--tx2);font-weight:500;padding:7px 8px;text-align:left;border-bottom:1px solid var(--bdr);white-space:nowrap;}
 th.r{text-align:right;}
 td{padding:7px 8px;border-bottom:1px solid var(--bdr);color:var(--tx1);vertical-align:middle;}
 td.r{text-align:right;}
+td.muted{color:var(--tx3);font-style:italic;}
 tr:last-child td{border-bottom:none;}
-.note{background:var(--bgi);border:1px solid rgba(24,95,165,.2);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txi);margin-bottom:12px;}
-@media(max-width:600px){.g2{grid-template-columns:1fr;}.tiles{grid-template-columns:repeat(2,1fr);}.mini-grid{grid-template-columns:1fr 1fr;}}
+.ad-name{font-size:11px;font-weight:500;line-height:1.3;}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--bdr);border-top-color:var(--txi);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@media (prefers-reduced-motion: reduce){.spin{animation:none;}}
+.err{background:var(--bgd);border:1px solid var(--bdr2);border-radius:var(--r1);padding:.625rem .875rem;font-size:12px;color:var(--txd);margin-bottom:12px;line-height:1.5;}
+.warn{background:var(--bgw);border:1px solid var(--bdr2);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txw);margin-bottom:12px;line-height:1.5;}
+.note{background:var(--bgi);border:1px solid var(--bdr);border-radius:var(--r1);padding:.5rem .875rem;font-size:11px;color:var(--txi);margin-bottom:12px;}
+.legend{display:flex;gap:14px;font-size:11px;color:var(--tx2);align-items:center;flex-wrap:wrap;}
+.legend span{display:flex;align-items:center;gap:5px;}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;}
+.chart-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}.tiles{grid-template-columns:repeat(2,1fr);}.mini-grid{grid-template-columns:1fr 1fr;}.hdr-right{align-items:flex-start;}}
+</style>
+<style>
+.chip-n{background:var(--bgi);color:var(--txi);margin-left:6px;}
+.src{font-size:11px;color:var(--tx3);margin-top:14px;line-height:1.6;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- Header -->
 <div class="hdr">
   <div class="hdr-row">
     <div>
-      <p class="hdr-sub">Meta Ads &middot; Mercury Partnership &middot; <span style="color:var(--tx3);">MTA data through Jul 15, 2026</span></p>
+      <p class="hdr-sub">Meta Ads &middot; Mercury Partnership &middot; <span id="rngLabel" style="color:var(--tx3);"></span></p>
       <p class="hdr-title">Meta &ndash; Mercury Performance</p>
     </div>
-    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
-      <div class="ctrl">
-        <button class="btn-p" id="bp-l7d"  onclick="setPeriod('l7d')">L7D</button>
-        <button class="btn-p" id="bp-l14d" onclick="setPeriod('l14d')">L14D</button>
-        <button class="btn-p on" id="bp-l30d" onclick="setPeriod('l30d')">L30D</button>
-        <button class="btn-p" id="bp-l60d" onclick="setPeriod('l60d')">L60D</button>
-        <button class="btn-p" id="bp-ytd"  onclick="setPeriod('ytd')">YTD</button>
+    <div class="hdr-right">
+      <div class="ctrl" role="group" aria-label="Lookback window">
+        <button class="btn-p" id="bp-ytd" data-w="ytd">YTD</button>
+        <button class="btn-p" id="bp-l180d" data-w="l180d">L180D</button>
+        <button class="btn-p" id="bp-l90d" data-w="l90d">L90D</button>
+        <button class="btn-p" id="bp-l30d" data-w="l30d">L30D</button>
+        <button class="btn-p" id="bp-l7d" data-w="l7d">L7D</button>
       </div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
-        <span id="rangeLabel" style="font-size:11px;color:var(--tx3);">Jun 16 – Jul 15, 2026</span>
-        <span class="chip chip-g">2 Active ad sets</span>
-        <span class="chip chip-g">8 Active ads</span>
-        <span class="chip chip-w">Static snapshot</span>
+      <div style="display:flex;gap:6px;">
+        <span class="chip chip-g">Data through 9/21/2026</span>
+        <span id="adsChip" class="chip chip-s"></span>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Summary tiles -->
+<div id="mtaBanner" class="warn" hidden></div>
+
 <div class="tiles">
   <div class="tile"><p class="tile-l">Total spend</p><p class="tile-v" id="t-spend">&ndash;</p></div>
   <div class="tile"><p class="tile-l">Impressions</p><p class="tile-v" id="t-imp">&ndash;</p></div>
-  <div class="tile"><p class="tile-l">MTA Conv.</p><p class="tile-v" id="t-conv">&ndash;</p></div>
-  <div class="tile"><p class="tile-l">Revenue (MTA)</p><p class="tile-v" id="t-ltv">&ndash;</p></div>
-  <div class="tile"><p class="tile-l">ROAS (MTA)</p><p class="tile-v" id="t-roas">&ndash;</p></div>
-  <div class="tile"><p class="tile-l">Active ads</p><p class="tile-v" id="t-liveads">8</p></div>
+  <div class="tile"><p class="tile-l" id="tl-conv">MTA Conv.</p><p class="tile-v" id="t-conv">&ndash;</p></div>
+  <div class="tile"><p class="tile-l" id="tl-rev">Revenue (MTA)</p><p class="tile-v" id="t-ltv">&ndash;</p></div>
+  <div class="tile"><p class="tile-l" id="tl-roas">ROAS (MTA)</p><p class="tile-v" id="t-roas">&ndash;</p></div>
+  <div class="tile"><p class="tile-l">Active ads</p><p class="tile-v" id="t-liveads">&ndash;</p></div>
 </div>
 
-<!-- Tabs -->
 <div class="tabs">
   <div class="tabs-row">
-    <button class="tab on" id="tb-s" onclick="showTab('s')">Overview</button>
-    <button class="tab" id="tb-p" onclick="showTab('p')">Ad Set Performance</button>
-    <button class="tab" id="tb-c" onclick="showTab('c')">Creative Performance</button>
+    <button class="tab on" id="tb-s" data-tab="s">Overview</button>
+    <button class="tab" id="tb-p" data-tab="p">Ad Set Performance</button>
+    <button class="tab" id="tb-c" data-tab="c">Creative Performance</button>
   </div>
 </div>
 
-<!-- Overview pane -->
-<div class="pane on" id="c-s">
+<div class="pane" id="c-s">
   <div class="card">
     <p class="card-h">Ad set breakdown</p>
     <div class="g2" id="adsetCards"></div>
@@ -120,414 +130,251 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- Ad Set Performance pane -->
-<div class="pane" id="c-p">
+<div class="pane" id="c-p" hidden>
   <div class="card">
     <p class="card-h">Ad set performance</p>
-    <div style="overflow-x:auto;"><table>
+    <div class="tbl"><table>
       <thead><tr>
         <th style="min-width:160px;">Ad set</th><th>Type</th>
         <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
         <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
-        <th class="r">Conv. (MTA)</th><th class="r">Revenue (MTA)</th>
+        <th class="r">Conv. (MTA)</th><th class="r">Revenue (MTA)</th><th class="r">Spend (Rockerbox)</th>
         <th class="r">ROAS&dagger;</th>
       </tr></thead>
       <tbody id="adsetTbody"></tbody>
     </table></div>
-    <p class="foot">&dagger; ROAS = MTA 1yr margin LTV &divide; Meta spend (adset-level, Snowflake WEB_METRICS)</p>
+    <p class="foot" id="roasFoot"></p>
   </div>
   <div class="card">
-    <p class="card-h">Conv. vs ROAS by ad set</p>
+    <p class="card-h">Conversions vs ROAS by ad set</p>
     <div style="position:relative;height:220px;"><canvas id="perfChart"></canvas></div>
   </div>
 </div>
 
-<!-- Creative Performance pane -->
-<div class="pane" id="c-c">
-  <div class="note">Creative-level ROAS uses Meta platform-reported revenue (website_purchase_roas). Not MTA.</div>
-
+<div class="pane" id="c-c" hidden>
+  <div class="note">Creative-level ROAS uses Meta platform-reported revenue. Rockerbox MTA is at ad set level only. Only ads with delivery in the selected window are listed.</div>
   <div class="card">
     <p class="card-h">Prospecting</p>
-    <div style="overflow-x:auto;"><table>
+    <div class="tbl"><table>
       <thead><tr>
         <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
-        <th class="r">Spend</th><th class="r">Impr.</th>
+        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
         <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
         <th class="r">ROAS (Platform)</th>
       </tr></thead>
       <tbody id="adTbodyPRS"></tbody>
     </table></div>
   </div>
-
   <div class="card">
     <p class="card-h">Retargeting</p>
-    <div style="overflow-x:auto;"><table>
+    <div class="tbl"><table>
       <thead><tr>
         <th style="min-width:180px;">Ad / Creative</th><th>Status</th>
-        <th class="r">Spend</th><th class="r">Impr.</th>
+        <th class="r">Spend</th><th class="r">Impr.</th><th class="r">Reach</th>
         <th class="r">Freq</th><th class="r">CPM</th><th class="r">CTR</th>
         <th class="r">ROAS (Platform)</th>
       </tr></thead>
       <tbody id="adTbodyRET"></tbody>
     </table></div>
   </div>
-
   <div class="card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-      <p class="card-h" style="margin:0;">CTR by ad <span style="font-size:11px;font-weight:400;color:var(--tx3);">&mdash; active ads, sorted by CTR</span></p>
-      <div style="display:flex;gap:14px;font-size:11px;color:var(--tx2);align-items:center;">
-        <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#639922;border-radius:2px;"></span>Prospecting</span>
-        <span style="display:flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;background:#BA7517;border-radius:2px;"></span>Retargeting</span>
+    <div class="chart-h">
+      <p class="card-h" style="margin:0;">CTR by ad <span style="font-size:11px;font-weight:400;color:var(--tx3);">(active ads with delivery in window)</span></p>
+      <div class="legend">
+        <span><span class="sw" style="background:#639922;"></span>Prospecting</span>
+        <span><span class="sw" style="background:#BA7517;"></span>Retargeting</span>
       </div>
     </div>
-    <div style="position:relative;height:360px;"><canvas id="adSpendChart"></canvas></div>
+    <div style="position:relative;height:340px;"><canvas id="adSpendChart"></canvas></div>
   </div>
 </div>
 
-</div><!-- /wrap -->
+<p class="src">Sources: Meta Ads (spend, impressions, reach, frequency, CPM, CTR, platform ROAS, ad status) pulled 9/22–9/23/2026 for each window ending 9/21; L30D = 8/24–9/21 to match Rockerbox. Rockerbox &ldquo;Order Completed &ndash; All Customers &ndash; Modeled Multi-Touch&rdquo; exports (daily, ad set level) for MTA conversions, revenue and spend: <span id="mtaRange"></span>. Ad status is current as of 9/22. Snapshot, so ask Claude to republish with fresh exports to update.</p>
 
-<!-- ============================================================
-  DATA CONSTANTS — replace these values when refreshing the snapshot.
-  Meta Ads (delivery): spend, imp, reach, freq, cpm, ctr, platformRoas
-  Snowflake WEB_METRICS MTA: conv + ltv (ATTRIBUTION_TYPE='MTA', SOURCE='n/a', PARTNER=facebook)
-  Adset IDs: PRS=6961932265147 | RET=6946328073147 | Account=102997199796606
-  After updating, re-upload this file to GitHub Pages (same filename, same branch).
-============================================================ -->
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <script>
-const PERIODS = {
-  l7d: {
-    label:"L7D", range:"Jul 9 – Jul 15, 2026",
-    adsets: [
-      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
-        spend:8700,  imp:420000, reach:153000, freq:2.75, cpm:20.70, ctr:1.14, conv:32,  ltv:7000,  roas:0.80 },
-      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
-        spend:6600,  imp:395000, reach:72000,  freq:5.50, cpm:16.70, ctr:0.88, conv:17,  ltv:4600,  roas:0.70 }
-    ],
-    ads: [
-      { name:"Baker Offer – Long Form",    adset:"prs", spend:5800, imp:275000, freq:2.34, cpm:21.10, ctr:1.20, platformRoas:0.35 },
-      { name:"LaptopUI – Long Form",       adset:"prs", spend:1600, imp:80000,  freq:2.00, cpm:20.00, ctr:0.96, platformRoas:0.12 },
-      { name:"Product Offer – Long Form",  adset:"prs", spend:1100, imp:55000,  freq:1.85, cpm:20.00, ctr:1.10, platformRoas:null },
-      { name:"Product Offer – Short Form", adset:"prs", spend:200,  imp:9000,   freq:1.40, cpm:22.20, ctr:0.91, platformRoas:3.50 },
-      { name:"Baker Offer – Long Form",    adset:"ret", spend:3900, imp:228000, freq:3.75, cpm:17.10, ctr:0.95, platformRoas:0.60 },
-      { name:"LaptopUI – Long Form",       adset:"ret", spend:1500, imp:94000,  freq:3.00, cpm:15.90, ctr:0.68, platformRoas:0.45 },
-      { name:"Product Offer – Long Form",  adset:"ret", spend:1100, imp:70000,  freq:3.50, cpm:15.70, ctr:0.88, platformRoas:0.50 },
-      { name:"Product Offer – Short Form", adset:"ret", spend:100,  imp:4000,   freq:2.00, cpm:25.00, ctr:1.65, platformRoas:null }
-    ]
-  },
-  l14d: {
-    label:"L14D", range:"Jul 2 – Jul 15, 2026",
-    adsets: [
-      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
-        spend:17489, imp:850063, reach:306436, freq:2.77, cpm:20.57, ctr:1.13, conv:63,  ltv:14090, roas:0.81 },
-      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
-        spend:13273, imp:792531, reach:143830, freq:5.51, cpm:16.75, ctr:0.88, conv:34,  ltv:9329,  roas:0.70 }
-    ],
-    ads: [
-      { name:"Baker Offer – Long Form",    adset:"prs", spend:11737, imp:561141, freq:2.34, cpm:20.92, ctr:1.19, platformRoas:0.36 },
-      { name:"LaptopUI – Long Form",       adset:"prs", spend:3238,  imp:162992, freq:2.02, cpm:19.86, ctr:0.96, platformRoas:0.12 },
-      { name:"Product Offer – Long Form",  adset:"prs", spend:2184,  imp:111031, freq:1.85, cpm:19.67, ctr:1.10, platformRoas:null },
-      { name:"Product Offer – Short Form", adset:"prs", spend:331,   imp:14899,  freq:1.40, cpm:22.22, ctr:0.91, platformRoas:3.24 },
-      { name:"Baker Offer – Long Form",    adset:"ret", spend:7791,  imp:457603, freq:3.75, cpm:17.03, ctr:0.94, platformRoas:0.63 },
-      { name:"LaptopUI – Long Form",       adset:"ret", spend:2984,  imp:187734, freq:3.04, cpm:15.89, ctr:0.68, platformRoas:0.47 },
-      { name:"Product Offer – Long Form",  adset:"ret", spend:2317,  imp:139746, freq:3.48, cpm:16.58, ctr:0.88, platformRoas:0.53 },
-      { name:"Product Offer – Short Form", adset:"ret", spend:180,   imp:7448,   freq:1.98, cpm:24.20, ctr:1.65, platformRoas:null }
-    ]
-  },
-  l30d: {
-    // Verified 2026-07-17 from live artifact: adset delivery + Snowflake MTA values confirmed
-    label:"L30D", range:"Jun 16 – Jul 15, 2026",
-    adsets: [
-      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
-        spend:43462, imp:2087606, reach:800383, freq:2.61, cpm:20.82, ctr:1.07, conv:126, ltv:40243, roas:0.93 },
-      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
-        spend:22190, imp:1220653, reach:199645, freq:6.11, cpm:18.18, ctr:0.88, conv:67,  ltv:24542, roas:1.11 }
-    ],
-    ads: [
-      { name:"Baker Offer – Long Form",    adset:"prs", spend:33756, imp:1590000, freq:2.34, cpm:21.23, ctr:1.11, platformRoas:0.26 },
-      { name:"LaptopUI – Long Form",       adset:"prs", spend:5442,  imp:281074,  freq:1.82, cpm:19.36, ctr:0.87, platformRoas:0.23 },
-      { name:"Product Offer – Long Form",  adset:"prs", spend:3754,  imp:191000,  freq:1.87, cpm:19.65, ctr:1.05, platformRoas:null },
-      { name:"Product Offer – Short Form", adset:"prs", spend:510,   imp:25000,   freq:1.39, cpm:20.40, ctr:0.85, platformRoas:2.06 },
-      { name:"Baker Offer – Long Form",    adset:"ret", spend:14528, imp:775589,  freq:4.34, cpm:18.73, ctr:0.94, platformRoas:0.70 },
-      { name:"LaptopUI – Long Form",       adset:"ret", spend:4294,  imp:255168,  freq:3.11, cpm:16.83, ctr:0.68, platformRoas:0.70 },
-      { name:"Product Offer – Long Form",  adset:"ret", spend:3163,  imp:186000,  freq:3.20, cpm:17.00, ctr:0.85, platformRoas:0.74 },
-      { name:"Product Offer – Short Form", adset:"ret", spend:205,   imp:9000,    freq:1.87, cpm:22.78, ctr:1.49, platformRoas:null }
-    ]
-  },
-  l60d: {
-    label:"L60D", range:"May 16 – Jul 15, 2026",
-    adsets: [
-      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
-        spend:64242, imp:2963649, reach:1200000, freq:2.48, cpm:21.68, ctr:1.10, conv:253, ltv:76382, roas:1.19 },
-      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
-        spend:50981, imp:2518888, reach:269000,  freq:9.35, cpm:20.24, ctr:0.87, conv:134, ltv:61362, roas:1.20 }
-    ],
-    ads: [
-      { name:"Baker Offer – Long Form",    adset:"prs", spend:50627, imp:2301826, freq:2.22, cpm:21.99, ctr:1.15, platformRoas:0.25 },
-      { name:"LaptopUI – Long Form",       adset:"prs", spend:7919,  imp:376635,  freq:1.90, cpm:21.03, ctr:0.89, platformRoas:0.15 },
-      { name:"Product Offer – Long Form",  adset:"prs", spend:5136,  imp:258957,  freq:1.85, cpm:19.83, ctr:1.03, platformRoas:0.10 },
-      { name:"Product Offer – Short Form", adset:"prs", spend:559,   imp:26231,   freq:1.38, cpm:21.30, ctr:0.87, platformRoas:1.92 },
-      { name:"Baker Offer – Long Form",    adset:"ret", spend:32148, imp:1562540, freq:6.25, cpm:20.57, ctr:0.92, platformRoas:0.88 },
-      { name:"LaptopUI – Long Form",       adset:"ret", spend:10952, imp:557947,  freq:4.35, cpm:19.63, ctr:0.73, platformRoas:0.62 },
-      { name:"Product Offer – Long Form",  adset:"ret", spend:7434,  imp:383283,  freq:3.99, cpm:19.39, ctr:0.86, platformRoas:0.61 },
-      { name:"Product Offer – Short Form", adset:"ret", spend:448,   imp:15118,   freq:1.74, cpm:29.62, ctr:1.37, platformRoas:null }
-    ]
-  },
-  ytd: {
-    // Verified 2026-07-17 from live artifact: Snowflake MTA conv + ltv confirmed
-    label:"YTD", range:"Jan 1 – Jul 15, 2026",
-    adsets: [
-      { label:'ASC-MercuryPartnership', type:'PRS', color:'#639922',
-        spend:122802, imp:5688934, reach:2200000, freq:2.64, cpm:21.59, ctr:1.17, conv:442, ltv:157284, roas:1.28 },
-      { label:'MercuryPartnership RET', type:'RET', color:'#BA7517',
-        spend:131658, imp:6359690, reach:404000,  freq:15.74, cpm:20.70, ctr:0.87, conv:592, ltv:238082, roas:1.81 }
-    ],
-    ads: [
-      { name:"Baker Offer – Long Form",    adset:"prs", spend:56944, imp:2563626, freq:2.20, cpm:22.21, ctr:1.15, platformRoas:0.25 },
-      { name:"LaptopUI – Long Form",       adset:"prs", spend:10147, imp:474990,  freq:1.80, cpm:21.36, ctr:0.87, platformRoas:0.12 },
-      { name:"Product Offer – Long Form",  adset:"prs", spend:10288, imp:499691,  freq:1.72, cpm:20.59, ctr:1.00, platformRoas:0.40 },
-      { name:"Product Offer – Short Form", adset:"prs", spend:708,   imp:33870,   freq:1.37, cpm:20.91, ctr:0.88, platformRoas:1.52 },
-      { name:"Baker Offer – Long Form",    adset:"ret", spend:40179, imp:1924442, freq:7.06, cpm:20.88, ctr:0.90, platformRoas:0.90 },
-      { name:"LaptopUI – Long Form",       adset:"ret", spend:15180, imp:748001,  freq:5.01, cpm:20.29, ctr:0.71, platformRoas:0.61 },
-      { name:"Product Offer – Long Form",  adset:"ret", spend:15512, imp:717295,  freq:4.85, cpm:21.63, ctr:0.81, platformRoas:1.10 },
-      { name:"Product Offer – Short Form", adset:"ret", spend:833,   imp:27279,   freq:1.83, cpm:30.55, ctr:1.20, platformRoas:0.80 }
-    ]
-  }
-};
+var DATA={"until":"2026-09-21","mtaStart":{"PRS":"2026-01-01","RET":"2026-01-01"},"ads":{"A1":{"id":"52506971113951","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC_Baker_Offer_Mercury-LongForm_MERC","type":"PRS","status":"ACTIVE","isNew":false},"A2":{"id":"52514686264951","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC_Baker_Offer_Mercury-LongForm_MERC","type":"RET","status":"ACTIVE","isNew":false},"A3":{"id":"52604985937551","name":"LLC_SOC_GRPH_PrtVrt_MERC_LLC_NA_MercuryPromo_TextOnly_MERC","type":"PRS","status":"ACTIVE","isNew":true},"A4":{"id":"52606714943751","name":"LLC_SOC_GRPH_PrtVrt_MERC_LLC_NA_MercuryPromo_TextOnly_MERC","type":"RET","status":"ACTIVE","isNew":true},"A5":{"id":"52514686264751","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC_LaptopUI_Offer_Mercury-LongForm_MERC","type":"RET","status":"ACTIVE","isNew":false},"A6":{"id":"6946338438147","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Product-Offer-Mercury-LongForm_MERC","type":"RET","status":"ACTIVE","isNew":false},"A7":{"id":"52506972110751","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC_LaptopUI_Offer_Mercury-LongForm_MERC","type":"PRS","status":"PAUSED","isNew":false},"A8":{"id":"6962004252747","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Product-Offer-Mercury-LongForm_MERC","type":"PRS","status":"ACTIVE","isNew":false},"A9":{"id":"52606714943951","name":"LLC_SOC_MTG_PrtVrt_MERC_LLC_LaptopOnly_MercuryPromo_MERC","type":"RET","status":"ACTIVE","isNew":true},"A10":{"id":"6962004253347","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Product-Offer-Mercury-ShortForm_MERC","type":"PRS","status":"PAUSED","isNew":false},"A11":{"id":"6946332367947","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Product-Offer-Mercury-ShortForm_MERC","type":"RET","status":"PAUSED","isNew":false},"A12":{"id":"52604985840551","name":"LLC_SOC_MTG_PrtVrt_MERC_LLC_LaptopOnly_MercuryPromo_MERC","type":"PRS","status":"PAUSED","isNew":true},"A13":{"id":"6962004253147","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Lifestyle-Offer-Mercury-LongForm_MERC","type":"PRS","status":"PAUSED","isNew":false},"A14":{"id":"6962004252947","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Lifestyle-Offer-Mercury-ShortForm_MERC","type":"PRS","status":"PAUSED","isNew":false},"A15":{"id":"6946339043747","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Lifestyle-Offer-Mercury-LongForm_MERC","type":"RET","status":"PAUSED","isNew":false},"A16":{"id":"6946337041347","name":"LLC_SOC_PHOT_PrtVrt_MERC_LLC-Lifestyle-Offer-Mercury-ShortForm_MERC","type":"RET","status":"PAUSED","isNew":false}},"windows":{"ytd":{"since":"2026-01-01","partial":false,"adsets":{"PRS":{"spend":247722.48,"imp":10812754,"reach":3325233,"freq":3.251728,"cpm":22.91,"ctr":1.27,"conv":1037.691,"rev":303453.26,"rbSpend":246966.7,"mtaFrom":"2026-01-01","partial":false},"RET":{"spend":206957.06,"imp":9481824,"reach":585139,"freq":16.204396,"cpm":21.83,"ctr":0.91,"conv":1302.5861,"rev":399642.0,"rbSpend":206287.78,"mtaFrom":"2026-01-01","partial":false}},"ads":[{"k":"A1","spend":134882.21,"imp":5933984,"reach":2295957,"freq":2.584536,"cpm":22.73,"ctr":1.28,"roas":0.288317},{"k":"A2","spend":76790.64,"imp":3521977,"reach":437240,"freq":8.05502,"cpm":21.8,"ctr":0.97,"roas":0.81132},{"k":"A15","spend":48439.14,"imp":2396446,"reach":213720,"freq":11.213017,"cpm":20.21,"ctr":0.87,"roas":2.039409},{"k":"A13","spend":39916.87,"imp":1831318,"reach":852860,"freq":2.147267,"cpm":21.8,"ctr":1.33,"roas":0.502018},{"k":"A6","spend":25839.15,"imp":1207539,"reach":213147,"freq":5.665287,"cpm":21.4,"ctr":0.89,"roas":0.854573},{"k":"A5","spend":25731.18,"imp":1201721,"reach":226015,"freq":5.316997,"cpm":21.41,"ctr":0.76,"roas":0.602886},{"k":"A3","spend":25544.93,"imp":828140,"reach":274740,"freq":3.014268,"cpm":30.85,"ctr":1.31,"roas":0.410395},{"k":"A7","spend":20462.84,"imp":923603,"reach":444892,"freq":2.076016,"cpm":22.16,"ctr":1.02,"roas":0.188165},{"k":"A8","spend":19290.48,"imp":876842,"reach":423026,"freq":2.072785,"cpm":22,"ctr":1.31,"roas":0.370097},{"k":"A4","spend":14532.87,"imp":478709,"reach":86176,"freq":5.555015,"cpm":30.36,"ctr":0.79,"roas":0.457307},{"k":"A16","spend":11514.22,"imp":546194,"reach":117684,"freq":4.641192,"cpm":21.08,"ctr":1.05,"roas":2.085945},{"k":"A14","spend":4798.06,"imp":285425,"reach":203714,"freq":1.401106,"cpm":16.81,"ctr":1.04,"roas":0.235674},{"k":"A10","spend":2424.62,"imp":111721,"reach":64789,"freq":1.724382,"cpm":21.7,"ctr":1.67,"roas":0.442956},{"k":"A11","spend":2371.79,"imp":77804,"reach":30714,"freq":2.533177,"cpm":30.48,"ctr":1.26,"roas":0.302725},{"k":"A9","spend":1737.38,"imp":51396,"reach":17214,"freq":2.985709,"cpm":33.8,"ctr":1.97,"roas":1.199507},{"k":"A12","spend":402.06,"imp":21705,"reach":14544,"freq":1.492368,"cpm":18.52,"ctr":1.82,"roas":null}]},"l180d":{"since":"2026-03-26","partial":false,"adsets":{"PRS":{"spend":227933.27,"imp":9879690,"reach":3081175,"freq":3.206468,"cpm":23.07,"ctr":1.25,"conv":908.0402,"rev":271969.62,"rbSpend":227190.58,"mtaFrom":"2026-03-26","partial":false},"RET":{"spend":166219.63,"imp":7461688,"reach":518531,"freq":14.390052,"cpm":22.28,"ctr":0.89,"conv":937.0421,"rev":276218.17,"rbSpend":165569.37,"mtaFrom":"2026-03-26","partial":false}},"ads":[{"k":"A1","spend":134882.21,"imp":5933984,"reach":2295957,"freq":2.584536,"cpm":22.73,"ctr":1.28,"roas":0.288317},{"k":"A2","spend":76790.64,"imp":3521977,"reach":437240,"freq":8.05502,"cpm":21.8,"ctr":0.97,"roas":0.81132},{"k":"A5","spend":25731.18,"imp":1201721,"reach":226015,"freq":5.316997,"cpm":21.41,"ctr":0.76,"roas":0.602886},{"k":"A3","spend":25544.93,"imp":828140,"reach":274740,"freq":3.014268,"cpm":30.85,"ctr":1.31,"roas":0.410395},{"k":"A13","spend":23177.8,"imp":1067807,"reach":533282,"freq":2.002331,"cpm":21.71,"ctr":1.19,"roas":0.338005},{"k":"A6","spend":22486.24,"imp":1077083,"reach":192658,"freq":5.590648,"cpm":20.88,"ctr":0.9,"roas":0.597573},{"k":"A7","spend":20462.84,"imp":923603,"reach":444892,"freq":2.076016,"cpm":22.16,"ctr":1.02,"roas":0.188165},{"k":"A15","spend":18748.19,"imp":888500,"reach":125257,"freq":7.093416,"cpm":21.1,"ctr":0.74,"roas":1.034889},{"k":"A8","spend":18148.59,"imp":830703,"reach":405821,"freq":2.046969,"cpm":21.85,"ctr":1.29,"roas":0.326585},{"k":"A4","spend":14532.87,"imp":478709,"reach":86176,"freq":5.555015,"cpm":30.36,"ctr":0.79,"roas":0.457307},{"k":"A16","spend":4100.61,"imp":173450,"reach":57630,"freq":3.009717,"cpm":23.64,"ctr":0.84,"roas":1.012654},{"k":"A14","spend":2926.21,"imp":163545,"reach":123450,"freq":1.324787,"cpm":17.89,"ctr":1.03,"roas":0.069698},{"k":"A10","spend":2388.63,"imp":110200,"reach":63917,"freq":1.724111,"cpm":21.68,"ctr":1.67,"roas":0.44963},{"k":"A11","spend":2092.38,"imp":68846,"reach":27126,"freq":2.538008,"cpm":30.39,"ctr":1.29,"roas":0.023896},{"k":"A9","spend":1737.38,"imp":51396,"reach":17214,"freq":2.985709,"cpm":33.8,"ctr":1.97,"roas":1.199507},{"k":"A12","spend":402.06,"imp":21705,"reach":14544,"freq":1.492368,"cpm":18.52,"ctr":1.82,"roas":null}]},"l90d":{"since":"2026-06-24","partial":false,"adsets":{"PRS":{"spend":155417.89,"imp":6600229,"reach":1928127,"freq":3.42313,"cpm":23.55,"ctr":1.32,"conv":529.0862,"rev":152749.8,"rbSpend":155181.91,"mtaFrom":"2026-06-24","partial":false},"RET":{"spend":92507.33,"imp":4101833,"reach":382349,"freq":10.727982,"cpm":22.55,"ctr":0.97,"conv":494.5843,"rev":138121.25,"rbSpend":91857.88,"mtaFrom":"2026-06-24","partial":false}},"ads":[{"k":"A1","spend":101015.54,"imp":4471993,"reach":1657100,"freq":2.698686,"cpm":22.59,"ctr":1.32,"roas":0.307727},{"k":"A2","spend":47688.53,"imp":2209417,"reach":343478,"freq":6.432485,"cpm":21.58,"ctr":1.02,"roas":0.714555},{"k":"A3","spend":25544.93,"imp":828140,"reach":274740,"freq":3.014268,"cpm":30.85,"ctr":1.31,"roas":0.410395},{"k":"A4","spend":14532.87,"imp":478709,"reach":86176,"freq":5.555015,"cpm":30.36,"ctr":0.79,"roas":0.457307},{"k":"A7","spend":14494.02,"imp":660987,"reach":290355,"freq":2.276479,"cpm":21.93,"ctr":1.09,"roas":0.265653},{"k":"A5","spend":13932.81,"imp":662139,"reach":146639,"freq":4.515436,"cpm":21.04,"ctr":0.79,"roas":0.584927},{"k":"A6","spend":12882.84,"imp":641834,"reach":114163,"freq":5.622084,"cpm":20.07,"ctr":0.98,"roas":0.498846},{"k":"A8","spend":11737.71,"imp":515624,"reach":211500,"freq":2.437939,"cpm":22.76,"ctr":1.54,"roas":0.260192},{"k":"A10","spend":2223.63,"imp":101778,"reach":58281,"freq":1.746332,"cpm":21.85,"ctr":1.74,"roas":0.482994},{"k":"A9","spend":1737.38,"imp":51396,"reach":17214,"freq":2.985709,"cpm":33.8,"ctr":1.97,"roas":1.199507},{"k":"A11","spend":1732.81,"imp":58335,"reach":20240,"freq":2.882164,"cpm":29.7,"ctr":1.34,"roas":0.028855},{"k":"A12","spend":402.06,"imp":21705,"reach":14544,"freq":1.492368,"cpm":18.52,"ctr":1.82,"roas":null}]},"l30d":{"since":"2026-08-24","partial":false,"adsets":{"PRS":{"spend":73277.89,"imp":2822592,"reach":842401,"freq":3.350651,"cpm":25.96,"ctr":1.42,"conv":213.823,"rev":61285.89,"rbSpend":73083.0,"mtaFrom":"2026-08-24","partial":false},"RET":{"spend":40975.66,"imp":1469223,"reach":178455,"freq":8.233017,"cpm":27.89,"ctr":0.99,"conv":199.0396,"rev":54130.68,"rbSpend":40601.31,"mtaFrom":"2026-08-24","partial":false}},"ads":[{"k":"A1","spend":42513.72,"imp":1755620,"reach":686285,"freq":2.55815,"cpm":24.22,"ctr":1.42,"roas":0.33756},{"k":"A3","spend":21583.81,"imp":707690,"reach":243543,"freq":2.905811,"cpm":30.5,"ctr":1.29,"roas":0.370671},{"k":"A2","spend":16674.06,"imp":618680,"reach":142877,"freq":4.330158,"cpm":26.95,"ctr":1.06,"roas":0.946832},{"k":"A4","spend":12070.32,"imp":394354,"reach":79811,"freq":4.941098,"cpm":30.61,"ctr":0.78,"roas":0.504377},{"k":"A5","spend":5583.73,"imp":207710,"reach":55429,"freq":3.747316,"cpm":26.88,"ctr":0.86,"roas":0.922083},{"k":"A8","spend":5060.59,"imp":202957,"reach":79435,"freq":2.555007,"cpm":24.93,"ctr":1.86,"roas":0.286235},{"k":"A6","spend":4548.49,"imp":186722,"reach":36702,"freq":5.087516,"cpm":24.36,"ctr":1.1,"roas":0.570893},{"k":"A7","spend":3323.71,"imp":126923,"reach":63334,"freq":2.004026,"cpm":26.19,"ctr":1.24,"roas":0.41117},{"k":"A9","spend":1508.27,"imp":43856,"reach":15541,"freq":2.821955,"cpm":34.39,"ctr":1.95,"roas":1.381715},{"k":"A11","spend":590.72,"imp":17900,"reach":7000,"freq":2.557143,"cpm":33,"ctr":1.46,"roas":null},{"k":"A10","spend":566.28,"imp":19325,"reach":12399,"freq":1.558593,"cpm":29.3,"ctr":2.69,"roas":null},{"k":"A12","spend":229.78,"imp":10075,"reach":7782,"freq":1.294654,"cpm":22.81,"ctr":2.02,"roas":null}]},"l7d":{"since":"2026-09-15","partial":false,"adsets":{"PRS":{"spend":13898.38,"imp":553819,"reach":210246,"freq":2.634148,"cpm":25.1,"ctr":1.26,"conv":46.5373,"rev":14229.68,"rbSpend":14403.83,"mtaFrom":"2026-09-15","partial":false},"RET":{"spend":11562.94,"imp":384045,"reach":81599,"freq":4.706492,"cpm":30.11,"ctr":0.93,"conv":43.2939,"rev":10709.02,"rbSpend":11268.67,"mtaFrom":"2026-09-15","partial":false}},"ads":[{"k":"A1","spend":9478.03,"imp":408431,"reach":180944,"freq":2.257223,"cpm":23.21,"ctr":1.28,"roas":0.601934},{"k":"A2","spend":5386.45,"imp":188424,"reach":60788,"freq":3.099691,"cpm":28.59,"ctr":0.97,"roas":0.704284},{"k":"A4","spend":3833.84,"imp":108742,"reach":34987,"freq":3.108069,"cpm":35.26,"ctr":0.81,"roas":0.937741},{"k":"A3","spend":3807.23,"imp":113980,"reach":55074,"freq":2.069579,"cpm":33.4,"ctr":1.19,"roas":0.176244},{"k":"A5","spend":1655.38,"imp":63027,"reach":26256,"freq":2.40048,"cpm":26.26,"ctr":0.87,"roas":0.472629},{"k":"A8","spend":613.12,"imp":31407,"reach":17272,"freq":1.818377,"cpm":19.52,"ctr":1.22,"roas":0.873679},{"k":"A6","spend":492.73,"imp":19139,"reach":7945,"freq":2.408936,"cpm":25.74,"ctr":1.11,"roas":0.305441},{"k":"A9","spend":194.54,"imp":4713,"reach":2903,"freq":1.623493,"cpm":41.28,"ctr":2.33,"roas":0.786471}]}}};
+var ADSET_CFG={PRS:{label:'ASC-MercuryPartnership',color:'#639922'},RET:{label:'MercuryPartnership RET',color:'#BA7517'}};
+var WINDOW_LABEL={ytd:'YTD',l180d:'Last 180 days',l90d:'Last 90 days',l30d:'L30D (Rockerbox)',l7d:'Last 7 days'};
+var CHARTS={},CUR_TAB='s',CUR_W='l30d',PERF_INIT=false;
 
-// ── helpers ──────────────────────────────────────────────────
-var CHARTS = {};
-var CUR_TAB = 's';
-var PERF_INIT = false;
-var CUR_ADSETS = [];
-var CUR_ADS = [];
-const PRESET_KEYS = ['l7d','l14d','l30d','l60d','ytd'];
-const PRESET_IDS  = ['bp-l7d','bp-l14d','bp-l30d','bp-l60d','bp-ytd'];
+function fmt$(n){return n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n.toFixed(0);}
+function fmtFull$(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function fmtBig(n){return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1000?(n/1000).toFixed(0)+'k':String(Math.round(n));}
+function fmtRoas(n){return(n==null||isNaN(n)||!isFinite(n)||n===0)?'–':n.toFixed(2)+'x';}
+function md(s){var p=s.split('-');return (+p[1])+'/'+(+p[2]);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888';}
+function axisColors(){return{tx:cssVar('--tx2'),grid:cssVar('--grid'),accent:cssVar('--accent'),bg:cssVar('--bg1')};}
 
-function fmt$(n){ return n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n.toFixed(0); }
-function fmtFull$(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
-function fmtBig(n){ return n>=1e6?(n/1e6).toFixed(1)+'M':n>=1000?(n/1000).toFixed(0)+'k':String(Math.round(n)); }
-function fmtRoas(n){ return(isNaN(n)||!isFinite(n)||n===0)?'–':n.toFixed(2)+'x'; }
-
-// ── period switch ─────────────────────────────────────────────
-function setPeriod(key){
-  PRESET_IDS.forEach(function(id){ document.getElementById(id).classList.remove('on'); });
-  var idx = PRESET_KEYS.indexOf(key);
-  if(idx>=0) document.getElementById(PRESET_IDS[idx]).classList.add('on');
-  var d = PERIODS[key];
-  document.getElementById('rangeLabel').textContent = d.range;
-  PERF_INIT = false;
-  CUR_ADSETS = d.adsets;
-  CUR_ADS = d.ads;
-  renderAll(d);
+function friendlyAdName(raw){
+  var s=raw.replace(/_/g,' ').replace(/\s+/g,' ').trim();var format='';
+  s=s.replace(/Mercury[-\s]*(LongForm|Long\s*Form)/gi,function(){format='Long Form';return ' ';});
+  s=s.replace(/Mercury[-\s]*(ShortForm|Short\s*Form)/gi,function(){format='Short Form';return ' ';});
+  s=s.replace(/Mercury[-\s]*(MidForm|Mid\s*Form)/gi,function(){format='Mid Form';return ' ';});
+  s=s.replace(/Mercury/gi,' ');
+  ['FB','BS','PRS','RET','AO','LLC','SOC','PHOT','PrtVrt','MERC'].forEach(function(w){s=s.replace(new RegExp('(?:^|\\s)'+w+'(?=\\s|$)','g'),' ');});
+  s=s.replace(/\s+/g,' ').replace(/^\s*[-\s]+|[-\s]+\s*$/g,'').trim();
+  if(!s&&!format)return raw;if(format&&s)return s+' – '+format;if(format)return format;return s;
 }
 
-// ── tab switch ────────────────────────────────────────────────
+function enrich(w){
+  var win=DATA.windows[w];
+  return ['PRS','RET'].map(function(t){
+    var a=win.adsets[t];
+    return{type:t,label:ADSET_CFG[t].label,color:ADSET_CFG[t].color,spend:a.spend,impressions:a.imp,reach:a.reach,frequency:a.freq,cpm:a.cpm,ctr:a.ctr,
+      mta_conv:a.conv,mta_ltv:a.rev,rbSpend:a.rbSpend,mtaFrom:a.mtaFrom,partial:a.partial,roas:a.rbSpend>0?a.rev/a.rbSpend:NaN};
+  });
+}
+function adsFor(w){
+  return DATA.windows[w].ads.map(function(a){var m=DATA.ads[a.k];return Object.assign({},a,m);});
+}
+
+function setWindow(w){
+  CUR_W=w;PERF_INIT=false;
+  Object.keys(WINDOW_LABEL).forEach(function(k){document.getElementById('bp-'+k).classList.toggle('on',k===w);});
+  var win=DATA.windows[w];
+  document.getElementById('rngLabel').textContent=WINDOW_LABEL[w]+' · '+md(win.since)+'/'+win.since.slice(0,4)+' – '+md(DATA.until)+'/2026';
+  var adsets=enrich(w),ads=adsFor(w);
+  var b=document.getElementById('mtaBanner');
+  if(win.partial){
+    b.textContent='The Rockerbox MTA export starts '+md(DATA.mtaStart.PRS)+', so MTA conversions, revenue and ROAS in this window cover '+md(DATA.mtaStart.PRS)+'–'+md(DATA.until)+' only. MTA ROAS uses Rockerbox spend for the same dates, so it isn\'t diluted. Meta delivery metrics (spend, impressions, CTR) cover the full window.';
+    b.hidden=false;
+  }else b.hidden=true;
+  var suffix=win.partial?' (from '+md(DATA.mtaStart.PRS)+')':'';
+  document.getElementById('tl-conv').textContent='MTA Conv.'+suffix;
+  document.getElementById('tl-rev').textContent='Revenue (MTA)'+suffix;
+  document.getElementById('tl-roas').textContent='ROAS (MTA)'+suffix;
+  document.getElementById('roasFoot').textContent='† ROAS = Rockerbox MTA revenue ÷ Rockerbox spend, matching the Rockerbox UI. Spend and delivery columns are Meta-reported.'+(win.partial?' MTA columns cover '+md(DATA.mtaStart.PRS)+'–'+md(DATA.until)+'.':'');
+
+  var totSpend=adsets.reduce(function(s,a){return s+a.spend;},0);
+  var totImp=adsets.reduce(function(s,a){return s+a.impressions;},0);
+  var totConv=adsets.reduce(function(s,a){return s+a.mta_conv;},0);
+  var totLtv=adsets.reduce(function(s,a){return s+a.mta_ltv;},0);
+  var totDen=adsets.reduce(function(s,a){return s+a.rbSpend;},0);
+  var activeAds=Object.keys(DATA.ads).filter(function(k){return DATA.ads[k].status==='ACTIVE';}).length;
+  document.getElementById('t-spend').textContent=fmt$(totSpend);
+  document.getElementById('t-imp').textContent=fmtBig(totImp);
+  document.getElementById('t-conv').textContent=Math.round(totConv).toLocaleString('en-US');
+  document.getElementById('t-ltv').textContent=fmt$(totLtv);
+  document.getElementById('t-roas').textContent=fmtRoas(totDen>0?totLtv/totDen:NaN);
+  document.getElementById('t-liveads').textContent=activeAds;
+  document.getElementById('adsChip').textContent=ads.length+' ads delivered in window';
+
+  renderOverviewCards(adsets);renderAdsetTable(adsets);renderAdTable(ads);
+  renderRoasChart(adsets);
+  if(CUR_TAB==='p'){PERF_INIT=true;renderPerfChart(adsets);}
+  if(CUR_TAB==='c')renderAdSpendChart(ads);
+}
+
 function showTab(n){
-  document.querySelectorAll('.pane').forEach(function(el){ el.classList.remove('on'); });
-  document.querySelectorAll('.tab').forEach(function(el){ el.classList.remove('on'); });
-  document.getElementById('c-'+n).classList.add('on');
-  document.getElementById('tb-'+n).classList.add('on');
-  CUR_TAB = n;
-  if(n==='p' && !PERF_INIT && CUR_ADSETS.length){
-    PERF_INIT=true;
-    setTimeout(function(){ renderPerfChart(CUR_ADSETS); },50);
-  }
-  if(n==='c' && CUR_ADS.length){
-    setTimeout(function(){ renderAdSpendChart(CUR_ADS); },50);
-  }
+  ['s','p','c'].forEach(function(k){document.getElementById('c-'+k).hidden=(k!==n);document.getElementById('tb-'+k).classList.toggle('on',k===n);});
+  CUR_TAB=n;
+  if(n==='p'&&!PERF_INIT){PERF_INIT=true;setTimeout(function(){renderPerfChart(enrich(CUR_W));},30);}
+  if(n==='c')setTimeout(function(){renderAdSpendChart(adsFor(CUR_W));},30);
 }
 
-// ── render all ────────────────────────────────────────────────
-function renderAll(d){
-  var adsets = d.adsets;
-  var ads    = d.ads;
-
-  // tiles
-  var totSpend = adsets.reduce(function(s,a){ return s+a.spend; },0);
-  var totImp   = adsets.reduce(function(s,a){ return s+a.imp; },0);
-  var totConv  = adsets.reduce(function(s,a){ return s+a.conv; },0);
-  var totLtv   = adsets.reduce(function(s,a){ return s+a.ltv; },0);
-  var totRoas  = totSpend>0 ? totLtv/totSpend : NaN;
-
-  document.getElementById('t-spend').textContent = fmt$(totSpend);
-  document.getElementById('t-imp').textContent   = fmtBig(totImp);
-  document.getElementById('t-conv').textContent  = Math.round(totConv).toLocaleString('en-US');
-  document.getElementById('t-ltv').textContent   = fmt$(totLtv);
-  document.getElementById('t-roas').textContent  = fmtRoas(totRoas);
-
-  renderOverviewCards(adsets);
-  renderAdsetTable(adsets);
-  renderAdTables(ads);
-
-  setTimeout(function(){
-    renderRoasChart(adsets);
-    setTimeout(function(){ if(CHARTS.roas) CHARTS.roas.resize(); },350);
-  },80);
-
-  if(CUR_TAB==='p'){ PERF_INIT=true; setTimeout(function(){ renderPerfChart(adsets); },50); }
-  if(CUR_TAB==='c'){ setTimeout(function(){ renderAdSpendChart(ads); },50); }
-}
-
-// ── overview cards ────────────────────────────────────────────
 function renderOverviewCards(adsets){
-  var html = adsets.map(function(a){
+  document.getElementById('adsetCards').innerHTML=adsets.map(function(a){
     return '<div class="inset">'
-      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">'
-      +'<span style="font-size:12px;font-weight:500;"><span class="dot" style="background:'+a.color+';"></span>'+a.label+'</span>'
-      +'<span class="chip chip-'+(a.type==='PRS'?'g':'s')+'">'+(a.type==='PRS'?'Prospecting':'Retargeting')+'</span>'
-      +'</div>'
+      +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px;">'
+      +'<span style="font-size:12px;font-weight:500;"><span class="dot" style="background:'+a.color+';"></span>'+esc(a.label)+'</span>'
+      +'<span class="chip chip-g">'+(a.type==='PRS'?'Prospecting':'Retargeting')+'</span></div>'
       +'<div class="mini-grid">'
       +'<div><div class="inset-l">Spend</div><div class="inset-v">'+fmt$(a.spend)+'</div></div>'
-      +'<div><div class="inset-l">MTA Conv.</div><div class="inset-v">'+Math.round(a.conv)+'</div></div>'
+      +'<div><div class="inset-l">MTA Conv.</div><div class="inset-v">'+Math.round(a.mta_conv)+'</div></div>'
       +'<div><div class="inset-l">ROAS</div><div class="inset-v" style="color:'+(a.roas>=1?'var(--txs)':'var(--txd)')+';">'+fmtRoas(a.roas)+'</div></div>'
-      +'<div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">'+fmtBig(a.imp)+'</div></div>'
-      +'<div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">'+a.freq.toFixed(1)+'</div></div>'
+      +'<div><div class="inset-l">Impressions</div><div class="inset-v" style="font-size:14px;">'+fmtBig(a.impressions)+'</div></div>'
+      +'<div><div class="inset-l">Frequency</div><div class="inset-v" style="font-size:14px;">'+a.frequency.toFixed(1)+'</div></div>'
       +'<div><div class="inset-l">CPM</div><div class="inset-v" style="font-size:14px;">$'+a.cpm.toFixed(2)+'</div></div>'
       +'</div></div>';
   }).join('');
-  document.getElementById('adsetCards').innerHTML = html;
 }
 
-// ── ROAS chart (bar + line) ───────────────────────────────────
-function renderRoasChart(adsets){
-  var ctx = document.getElementById('roasChart').getContext('2d');
-  if(CHARTS.roas) CHARTS.roas.destroy();
-  var labels    = adsets.map(function(a){ return a.type==='PRS'?'Prospecting':'Retargeting'; });
-  var spendData = adsets.map(function(a){ return a.spend; });
-  var roasData  = adsets.map(function(a){ return isFinite(a.roas)?a.roas:0; });
-  var bgColors  = adsets.map(function(a){ return a.color+'bb'; });
-  var bdColors  = adsets.map(function(a){ return a.color; });
-  CHARTS.roas = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:labels,
-      datasets:[
-        { label:'Spend', data:spendData, backgroundColor:bgColors, borderColor:bdColors, borderWidth:1, borderRadius:4, yAxisID:'y' },
-        { label:'MTA ROAS', type:'line', data:roasData, borderColor:'#378ADD', backgroundColor:'transparent',
-          pointBackgroundColor:bdColors, pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:8, pointHoverRadius:10, yAxisID:'y2', tension:0 }
-      ]
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},
-        tooltip:{callbacks:{label:function(c){
-          if(c.dataset.label==='Spend') return ' Spend: '+fmtFull$(c.raw);
-          return ' MTA ROAS: '+fmtRoas(c.raw);
-        }}}
-      },
-      scales:{
-        y:{ title:{display:true,text:'Spend ($)',font:{size:10},color:'var(--tx2)'},
-            grid:{color:'rgba(0,0,0,.06)'}, ticks:{callback:function(v){return fmt$(v);},font:{size:11}} },
-        y2:{ title:{display:true,text:'MTA ROAS',font:{size:10},color:'#378ADD'},
-             position:'right', grid:{display:false},
-             ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:'#378ADD'} }
-      }
-    }
-  });
-}
-
-// ── adset table ───────────────────────────────────────────────
 function renderAdsetTable(adsets){
-  var rows = adsets.map(function(a){
-    return '<tr>'
-      +'<td><span style="font-size:11px;font-weight:500;"><span class="dot" style="background:'+a.color+';"></span>'+a.label+'</span></td>'
+  document.getElementById('adsetTbody').innerHTML=adsets.map(function(a){
+    return '<tr><td><span style="font-weight:500;font-size:11px;"><span class="dot" style="background:'+a.color+';"></span>'+esc(a.label)+'</span></td>'
       +'<td><span class="chip chip-'+(a.type==='PRS'?'g':'s')+'">'+a.type+'</span></td>'
-      +'<td class="r">'+fmtFull$(a.spend)+'</td>'
-      +'<td class="r">'+fmtBig(a.imp)+'</td>'
-      +'<td class="r">'+fmtBig(a.reach)+'</td>'
-      +'<td class="r">'+a.freq.toFixed(2)+'</td>'
-      +'<td class="r">$'+a.cpm.toFixed(2)+'</td>'
-      +'<td class="r">'+a.ctr.toFixed(2)+'%</td>'
-      +'<td class="r">'+Math.round(a.conv)+'</td>'
-      +'<td class="r">'+fmtFull$(a.ltv)+'</td>'
-      +'<td class="r"><strong>'+fmtRoas(a.roas)+'</strong></td>'
-      +'</tr>';
+      +'<td class="r">'+fmtFull$(a.spend)+'</td><td class="r">'+fmtBig(a.impressions)+'</td><td class="r">'+fmtBig(a.reach)+'</td>'
+      +'<td class="r">'+a.frequency.toFixed(2)+'</td><td class="r">$'+a.cpm.toFixed(2)+'</td><td class="r">'+a.ctr.toFixed(2)+'%</td>'
+      +'<td class="r">'+a.mta_conv.toFixed(2)+'</td><td class="r">'+fmtFull$(a.mta_ltv)+'</td><td class="r">'+fmtFull$(a.rbSpend)+'</td>'
+      +'<td class="r"><strong>'+fmtRoas(a.roas)+'</strong></td></tr>';
   }).join('');
-  document.getElementById('adsetTbody').innerHTML = rows;
 }
 
-// ── perf chart (conv bars + ROAS line) ───────────────────────
-function renderPerfChart(adsets){
-  var ctx = document.getElementById('perfChart').getContext('2d');
-  if(CHARTS.perf) CHARTS.perf.destroy();
-  var labels = adsets.map(function(a){ return a.type==='PRS'?'Prospecting':'Retargeting'; });
-  var barDatasets = adsets.map(function(a,i){
-    var vals = adsets.map(function(_,j){ return i===j?a.conv:null; });
-    return { label:a.type==='PRS'?'Prospecting':'Retargeting', type:'bar', data:vals,
-      backgroundColor:a.color+'99', borderColor:a.color, borderWidth:1, borderRadius:4, yAxisID:'y' };
-  });
-  CHARTS.perf = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:labels,
-      datasets:barDatasets.concat([{
-        label:'MTA ROAS', type:'line',
-        data:adsets.map(function(a){ return isFinite(a.roas)?a.roas:null; }),
-        borderColor:'#378ADD', backgroundColor:'transparent',
-        pointBackgroundColor:adsets.map(function(a){ return a.color; }),
-        pointBorderColor:'#fff', pointBorderWidth:2, pointRadius:7, yAxisID:'y2', tension:0
-      }])
-    },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}},
-      scales:{
-        y:{ title:{display:true,text:'MTA Conversions',font:{size:10}}, grid:{color:'rgba(0,0,0,.06)'}, ticks:{font:{size:11}} },
-        y2:{ title:{display:true,text:'MTA ROAS',font:{size:10}}, position:'right', grid:{display:false},
-             ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11}} }
-      }
-    }
-  });
-}
-
-// ── creative tables ───────────────────────────────────────────
-function renderAdTables(ads){
-  function buildRows(list){
-    if(!list.length) return '<tr><td colspan="8" style="color:var(--tx3);text-align:center;padding:14px;">No data for this period</td></tr>';
-    var sorted = list.slice().sort(function(a,b){ return b.spend-a.spend; });
-    return sorted.map(function(a){
-      return '<tr>'
-        +'<td style="font-weight:500;font-size:11px;">'+a.name+'</td>'
-        +'<td><span class="chip chip-g">ACTIVE</span></td>'
-        +'<td class="r">'+fmtFull$(a.spend)+'</td>'
-        +'<td class="r">'+fmtBig(a.imp)+'</td>'
-        +'<td class="r">'+a.freq.toFixed(2)+'</td>'
-        +'<td class="r">$'+a.cpm.toFixed(2)+'</td>'
-        +'<td class="r">'+a.ctr.toFixed(2)+'%</td>'
-        +'<td class="r">'+(a.platformRoas!==null?a.platformRoas.toFixed(2)+'x':'–')+'</td>'
-        +'</tr>';
+function renderAdTable(ads){
+  function rows(t){
+    var list=ads.filter(function(a){return a.type===t;}).sort(function(a,b){
+      var sa=a.status==='ACTIVE',sb=b.status==='ACTIVE';if(sa!==sb)return sa?-1:1;return b.spend-a.spend;});
+    if(!list.length)return '<tr><td colspan="9" class="muted" style="text-align:center;">No delivery in this window</td></tr>';
+    return list.map(function(a){
+      var active=a.status==='ACTIVE';
+      return '<tr><td><div class="ad-name" title="'+esc(a.name)+'">'+esc(friendlyAdName(a.name))+(a.isNew?'<span class="chip chip-n">New since July</span>':'')+'</div></td>'
+        +'<td><span class="chip chip-'+(active?'g':'s')+'">'+a.status+'</span></td>'
+        +'<td class="r">'+fmtFull$(a.spend)+'</td><td class="r">'+fmtBig(a.imp)+'</td><td class="r">'+fmtBig(a.reach)+'</td>'
+        +'<td class="r">'+a.freq.toFixed(2)+'</td><td class="r">$'+a.cpm.toFixed(2)+'</td><td class="r">'+a.ctr.toFixed(2)+'%</td>'
+        +'<td class="r">'+(a.roas?a.roas.toFixed(2)+'x':'–')+'</td></tr>';
     }).join('');
   }
-  document.getElementById('adTbodyPRS').innerHTML = buildRows(ads.filter(function(a){ return a.adset==='prs'; }));
-  document.getElementById('adTbodyRET').innerHTML = buildRows(ads.filter(function(a){ return a.adset==='ret'; }));
+  document.getElementById('adTbodyPRS').innerHTML=rows('PRS');
+  document.getElementById('adTbodyRET').innerHTML=rows('RET');
 }
 
-// ── CTR chart ────────────────────────────────────────────────
-function renderAdSpendChart(ads){
-  var ctx = document.getElementById('adSpendChart').getContext('2d');
-  if(CHARTS.adSpend) CHARTS.adSpend.destroy();
-  var sorted = ads.slice().sort(function(a,b){ return b.ctr-a.ctr; });
-  var labels = sorted.map(function(a){ return (a.adset==='prs'?'PRS':'RET')+' · '+a.name; });
-  var data   = sorted.map(function(a){ return a.ctr; });
-  var colors = sorted.map(function(a){ return (a.adset==='prs'?'#639922':'#BA7517')+'cc'; });
-  CHARTS.adSpend = new Chart(ctx,{
+function renderRoasChart(adsets){
+  if(typeof Chart==='undefined')return;
+  if(CHARTS.roas)CHARTS.roas.destroy();var c=axisColors();
+  CHARTS.roas=new Chart(document.getElementById('roasChart').getContext('2d'),{
     type:'bar',
-    data:{labels:labels,datasets:[{label:'CTR',data:data,backgroundColor:colors,borderRadius:3}]},
-    options:{
-      responsive:true, maintainAspectRatio:false, indexAxis:'y',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){ return ' CTR: '+c.raw.toFixed(2)+'%'; }}}},
-      scales:{
-        x:{ grid:{color:'rgba(0,0,0,.06)'}, ticks:{callback:function(v){ return v.toFixed(2)+'%'; },font:{size:10}} },
-        y:{ grid:{display:false}, ticks:{font:{size:10}} }
-      }
-    }
+    data:{labels:adsets.map(function(a){return a.type==='PRS'?'Prospecting':'Retargeting';}),datasets:[
+      {label:'Spend',data:adsets.map(function(a){return a.spend;}),backgroundColor:adsets.map(function(a){return a.color+'bb';}),borderColor:adsets.map(function(a){return a.color;}),borderWidth:1,borderRadius:4,yAxisID:'y'},
+      {label:'MTA ROAS',type:'line',data:adsets.map(function(a){return isFinite(a.roas)?a.roas:null;}),borderColor:c.accent,backgroundColor:'transparent',pointBackgroundColor:adsets.map(function(a){return a.color;}),pointBorderColor:c.bg,pointBorderWidth:2,pointRadius:8,pointHoverRadius:10,yAxisID:'y2',tension:0}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,color:c.tx}},tooltip:{callbacks:{label:function(x){return x.dataset.label==='Spend'?' Spend: '+fmtFull$(x.raw):' MTA ROAS: '+fmtRoas(x.raw);}}}},
+      scales:{x:{ticks:{color:c.tx},grid:{color:c.grid}},
+        y:{title:{display:true,text:'Spend ($)',font:{size:10},color:c.tx},grid:{color:c.grid},ticks:{callback:function(v){return fmt$(v);},font:{size:11},color:c.tx}},
+        y2:{title:{display:true,text:'MTA ROAS',font:{size:10},color:c.accent},position:'right',beginAtZero:true,grid:{display:false},ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:c.accent}}}}
   });
 }
 
-// ── init ──────────────────────────────────────────────────────
-setPeriod('l30d');
+function renderPerfChart(adsets){
+  if(typeof Chart==='undefined')return;
+  if(CHARTS.perf)CHARTS.perf.destroy();var c=axisColors();
+  var labels=adsets.map(function(a){return a.type==='PRS'?'Prospecting':'Retargeting';});
+  var bars=adsets.map(function(a,i){return{label:labels[i],type:'bar',data:adsets.map(function(_,j){return i===j?a.mta_conv:null;}),backgroundColor:a.color+'99',borderColor:a.color,borderWidth:1,borderRadius:4,yAxisID:'y',skipNull:true};});
+  CHARTS.perf=new Chart(document.getElementById('perfChart').getContext('2d'),{
+    type:'bar',
+    data:{labels:labels,datasets:bars.concat([{label:'MTA ROAS',type:'line',data:adsets.map(function(a){return isFinite(a.roas)?a.roas:null;}),borderColor:c.accent,backgroundColor:'transparent',pointBackgroundColor:adsets.map(function(a){return a.color;}),pointBorderColor:c.bg,pointBorderWidth:2,pointRadius:7,yAxisID:'y2',tension:0}])},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,color:c.tx}}},
+      scales:{x:{ticks:{color:c.tx},grid:{color:c.grid}},
+        y:{title:{display:true,text:'MTA Conversions',font:{size:10},color:c.tx},beginAtZero:true,grid:{color:c.grid},ticks:{font:{size:11},color:c.tx}},
+        y2:{title:{display:true,text:'MTA ROAS',font:{size:10},color:c.tx},position:'right',beginAtZero:true,grid:{display:false},ticks:{callback:function(v){return v.toFixed(2)+'x';},font:{size:11},color:c.tx}}}}
+  });
+}
+
+function renderAdSpendChart(ads){
+  if(typeof Chart==='undefined')return;
+  if(CHARTS.adSpend)CHARTS.adSpend.destroy();var c=axisColors();
+  var sorted=ads.filter(function(a){return a.status==='ACTIVE';}).sort(function(a,b){return b.ctr-a.ctr;});
+  CHARTS.adSpend=new Chart(document.getElementById('adSpendChart').getContext('2d'),{
+    type:'bar',
+    data:{labels:sorted.map(function(a){var f=friendlyAdName(a.name)+(a.type==='PRS'?' (PRS)':' (RET)');return f.length>44?f.substring(0,44)+'…':f;}),
+      datasets:[{label:'CTR',data:sorted.map(function(a){return a.ctr;}),backgroundColor:sorted.map(function(a){return ADSET_CFG[a.type].color+'cc';}),borderRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return' CTR: '+x.raw.toFixed(2)+'%';}}}},
+      scales:{x:{beginAtZero:true,grid:{color:c.grid},ticks:{callback:function(v){return v.toFixed(2)+'%';},font:{size:10},color:c.tx}},y:{grid:{display:false},ticks:{font:{size:10},color:c.tx}}}}
+  });
+}
+
+document.querySelectorAll('[data-w]').forEach(function(b){b.addEventListener('click',function(){setWindow(b.dataset.w);});});
+document.querySelectorAll('[data-tab]').forEach(function(b){b.addEventListener('click',function(){showTab(b.dataset.tab);});});
+document.getElementById('mtaRange').textContent='both ad sets 1/1–9/21/2026 (YTD export 9/23; Prospecting delivery starts 1/12)';
+function rerender(){setWindow(CUR_W);}
+try{window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',rerender);}catch(e){}
+try{new MutationObserver(rerender).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});}catch(e){}
+setWindow('l30d');
 </script>
+
 </body>
 </html>
